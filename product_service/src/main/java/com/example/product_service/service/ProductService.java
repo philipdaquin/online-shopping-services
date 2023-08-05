@@ -27,31 +27,31 @@ public class ProductService {
     }
 
 
-    // public Product save(Product newProduct) { 
-    //     productRepository.save(newProduct);
-    //     return newProduct;
-    // }
+    public Product save(Product newProduct) { 
+        productRepository.save(newProduct);
+        return newProduct;
+    }
 
-    // public Optional<Product> getOne(Long id) { 
-    //     return productRepository.findById(id);
-    // }
-    // public Page<Product> getAll(Pageable pageable) { 
-    //     return productRepository.findAll(pageable);
+    public Optional<Product> getOne(Long id) { 
+        return productRepository.findById(id);
+    }
+    public Page<Product> getAll(Pageable pageable) { 
+        return productRepository.findAll(pageable);
         
-    // }
-    // public Optional<Product> partialUpdate(Product updatedProduct) { 
-    //     return productRepository
-    //         .findById(updatedProduct.getId())
-    //         .map(current -> { 
+    }
+    public Optional<Product> partialUpdate(Product updatedProduct) { 
+        return productRepository
+            .findById(updatedProduct.getId())
+            .map(current -> { 
                 
 
-    //             return current;
+                return current;
 
-    //         }).map(productRepository::save);
-    // }
+            }).map(productRepository::save);
+    }
 
-    // public void delete(Long id) { 
-    //     productRepository.deleteById(id);
-    // }
+    public void delete(Long id) { 
+        productRepository.deleteById(id);
+    }
 
 }
