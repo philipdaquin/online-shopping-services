@@ -50,8 +50,7 @@ public class ProductServiceTest {
     @Test 
     void testSaveProduct() {
         // Arrange 
-        Product tmp = new Product();
-        tmp.setName("test1");
+        Product tmp = getMockOne();
 
         // Act
         Product savedToDb = productService.save(tmp);

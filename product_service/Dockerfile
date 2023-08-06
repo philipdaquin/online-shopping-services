@@ -1,1 +1,1 @@
-FROM java
+FROM openjdk:17
