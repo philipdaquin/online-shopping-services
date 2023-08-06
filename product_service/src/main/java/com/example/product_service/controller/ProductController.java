@@ -14,7 +14,7 @@ import com.example.product_service.repository.ProductRepository;
 import com.example.product_service.service.ProductService;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/api")
 public class ProductController {
 
     private final ProductService productService;
@@ -26,7 +26,7 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
-    @GetMapping
+    @GetMapping("/product")
     public ResponseEntity<Page<Product>> getAllItems(
         @RequestParam(defaultValue = "0") int page, 
         @RequestParam(defaultValue = "10") int size
