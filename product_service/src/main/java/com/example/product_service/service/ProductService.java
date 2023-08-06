@@ -91,7 +91,7 @@ public class ProductService {
      * 
      * @param id
      */
-    public void delete(Long id) { 
+    public void deleteOne(Long id) { 
         productRepository.deleteById(id);
     }
 

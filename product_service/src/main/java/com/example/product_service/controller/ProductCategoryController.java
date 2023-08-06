@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,11 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.product_service.domain.ProductCategory;
 import com.example.product_service.repository.ProductCategoryRepository;
-import com.example.product_service.repository.ProductRepository;
 import com.example.product_service.service.ProductCategoryService;
-import com.example.product_service.service.ProductService;
-
-import io.micrometer.core.ipc.http.HttpSender.Response;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
@@ -38,6 +35,7 @@ public class ProductCategoryController {
 
     private final ProductCategoryRepository productCategoryRepository;
 
+    
     public ProductCategoryController(
         ProductCategoryService productCategoryService,
         ProductCategoryRepository productCategoryRepository
@@ -46,6 +44,12 @@ public class ProductCategoryController {
         this.productCategoryService = productCategoryService;
     }
     
+    /**
+     * 
+     * @param newCategory
+     * @return
+     * @throws URISyntaxException
+     */
     @PostMapping("/category")
     public ResponseEntity<ProductCategory> createProductCategory(@Valid @RequestBody ProductCategory newCategory) throws URISyntaxException {
         ProductCategory saved = productCategoryService.save(newCategory);
@@ -55,6 +59,11 @@ public class ProductCategoryController {
             .body(saved);
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     @GetMapping("/category/{id}")
     public ResponseEntity<ProductCategory> getProductCategory(@PathVariable Long id) {
         Optional<ProductCategory> category = productCategoryService.getOne(id);
@@ -64,8 +73,14 @@ public class ProductCategoryController {
         }
 
         return ResponseEntity.notFound().build();
-    }   
+    }  
 
+    /**
+     * 
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping("/category")
     public ResponseEntity<Page<ProductCategory>> getAllProductCategories(
         @RequestParam(defaultValue = "0") int page, 
@@ -77,6 +92,11 @@ public class ProductCategoryController {
         return new ResponseEntity<Page<ProductCategory>>(categories, null, HttpStatus.OK);
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     @DeleteMapping("/category/{id}")
     public ResponseEntity<Void> deleteProductCategory(@PathVariable Long id) {
         productCategoryService.deleteOne(id);
@@ -84,8 +104,15 @@ public class ProductCategoryController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping(value = "category/{id}")
-    public ResponseEntity<ProductCategory> updateProductCategory(
+    /**
+     * Performs partial update
+     * 
+     * @param id
+     * @param newProductCategory
+     * @return
+     */
+    @PatchMapping(value = "/category/{id}")
+    public ResponseEntity<ProductCategory> partialUpdateProductCategory(
         @PathVariable final Long id,
         @NotNull @RequestBody ProductCategory newProductCategory
     ) {
@@ -102,8 +129,6 @@ public class ProductCategoryController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid Id");
         }
 
-
-
         ProductCategory updated = productCategoryService
             .partialUpdate(newProductCategory)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
@@ -111,5 +136,33 @@ public class ProductCategoryController {
         return ResponseEntity.ok().body(updated);
     }
 
+    /**
+     * Updates an existing record
+     * 
+     * @param id
+     * @param newProductCategory
+     * @return
+     */
+    @PutMapping(value = "/category/{id}")
+    public ResponseEntity<ProductCategory> updateProductCategory(
+        @PathVariable final Long id, 
+        @NotNull @RequestBody ProductCategory newProductCategory
+    ) { 
+        if (newProductCategory.getId() == null) {
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Category does not exist");
+        }
+
+        if (!productCategoryRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
+        }
+
+        if (id != newProductCategory.getId()) { 
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid Id");
+        }
+
+        ProductCategory updated = productCategoryService.save(newProductCategory);
+
+        return ResponseEntity.ok().body(updated);
+    }
 
 }
