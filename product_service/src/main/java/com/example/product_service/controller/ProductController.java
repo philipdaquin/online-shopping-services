@@ -2,9 +2,6 @@ package com.example.product_service.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Optional;
-
-import javax.xml.crypto.URIReferenceException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

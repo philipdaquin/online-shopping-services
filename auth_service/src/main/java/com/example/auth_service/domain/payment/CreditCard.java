@@ -21,34 +21,25 @@ import jakarta.validation.constraints.NotNull;
 /**
  * CreditCard info
  */
-@Entity
-@Table(name = "credit_card")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CreditCard implements Serializable {
 
-    public static final Long serialVersionID = 1L;
+    private static final Long serialVersionID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Column(name = "nameOnCard", nullable = false)
     private String nameOnCard;
 
     @NotNull
-    @Column(name = "cvv", nullable = false)
     private String cvv;
 
     @NotNull
-    @Column(name = "cardNumber", nullable = false)
     private String cardNumber;
 
     @NotNull
-    @Column(name = "billingAddress", nullable = false)
     private Address billingAddress;
 
-    @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = {"creditCards"}, allowSetters = true)
     private Account account;

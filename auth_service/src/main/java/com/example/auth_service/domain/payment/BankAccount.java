@@ -20,27 +20,17 @@ import jakarta.validation.constraints.NotNull;
 /**
  * Bank Account
  */
-@Entity
-@Table(name = "bank_account")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class BankAccount implements Serializable {
     
     private static final Long serialVersionID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotNull
-    @Column(name = "bankName", nullable = false)
     private String bankName;
     
     @NotNull
-    @Column(name = "businessNumber", nullable = false)
     private String businessNumber;
 
     @NotNull
-    @Column(name = "accountNumber", nullable = false)
     private String accountNumber;
 
     @ManyToOne(optional = false)
@@ -49,16 +39,12 @@ public class BankAccount implements Serializable {
     private Account account;
 
 
-    public Long getId() { return id;}
     public String getBankName() { return bankName;}
     public String getBusinessNumber() { return businessNumber;}
     public String getAccountNumber() { return accountNumber;}
     public Account getAccount() { return account;}
 
 
-    public Long setId(Long id) { 
-        return this.id = id;
-    }
     public String setBankName(String bankName) { 
         return this.bankName = bankName;
     }

@@ -24,7 +24,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "customer_details")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public abstract class CustomerDetails implements Serializable {
+public class CustomerDetails implements Serializable {
 
     private static final Long serialVersionID = 1L;
 
@@ -42,5 +42,14 @@ public abstract class CustomerDetails implements Serializable {
     private Address address;
 
 
-    
+    public CustomerDetails() {}
+
+    public Long getId() { return id; }
+    public Account getAccount() { return account; }
+    public Address getAddress() { return address; }
+        
+
+    public void setId(Long id) { this.id = id; }
+    public void setAccount(Account account) { this.account = account; }
+    public void setAddress(Address address) { this.address = address; }
 }
