@@ -1,4 +1,4 @@
-package com.example.auth_service.domain.shoppingcart;
+package com.example.shopping_cart.domain.shoppingcart;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -7,7 +7,7 @@ import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.example.auth_service.domain.actors.CustomerDetails;
+import com.example.shopping_cart.domain.actors.CustomerDetails;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.GeneratedValue;
