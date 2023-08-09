@@ -92,6 +92,35 @@ public class Order implements Serializable {
     }
 
 
+    public Order id(Long x) {
+        this.id = x;
+        return this;
+    } 
+    public Order status(OrderStatus status) {
+        this.status = status;
+        return this;
+    } 
+    public Order product(Product product) {
+        this.product = product;
+        return this;
+    } 
+    public Order quantity(Integer quantity) {
+        this.quantity = quantity;
+        return this;
+    } 
+    public Order totalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+        return this;
+    } 
+    public Order orderedAt(Instant orderedAt) {
+        this.orderedAt = orderedAt;
+        return this;
+    } 
+
+    public Order build() { 
+        return this;
+    }
+
     public void setLogs(List<OrderLog> log) {this.logs = log; }
     
     public void removeOrderLog(OrderLog log) { logs.remove(log);}    
