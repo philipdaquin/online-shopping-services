@@ -85,7 +85,7 @@ public class OrderController {
      * @param id
      * @return
      */
-    @GetMapping("/product-orde/{id}")
+    @GetMapping("/product-order/{id}")
     public ResponseEntity<Order> getOrder(@PathVariable Long id) {
         Optional<Order> productOrder = orderService.getOne(id);
 
