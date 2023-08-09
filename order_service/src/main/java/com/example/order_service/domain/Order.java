@@ -78,7 +78,7 @@ public class Order implements Serializable {
     public void setTotalPrice(BigDecimal totalPrice) { this.totalPrice = totalPrice; }
     public void setOrderedAt(Instant orderedAt) { this.orderedAt = orderedAt; }
 
-    public void setLogs(List<OrderLog> log) {this.logs = log; }
+    public void setLogs(List<OrderLog> log) {this.log = log; }
     
     public void removeOrderLog(OrderLog log) { logs.remove(log);}    
     
