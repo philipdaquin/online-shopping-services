@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,8 +37,9 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Enumerated
     @NotNull    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private OrderStatus status;
 
     @NotNull
@@ -59,6 +61,7 @@ public class Order implements Serializable {
     private Instant orderedAt;
 
     @NotNull
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<OrderLog> logs = new ArrayList<>();
 
     
@@ -78,7 +81,7 @@ public class Order implements Serializable {
     public void setTotalPrice(BigDecimal totalPrice) { this.totalPrice = totalPrice; }
     public void setOrderedAt(Instant orderedAt) { this.orderedAt = orderedAt; }
 
-    public void setLogs(List<OrderLog> log) {this.log = log; }
+    public void setLogs(List<OrderLog> log) {this.logs = log; }
     
     public void removeOrderLog(OrderLog log) { logs.remove(log);}    
     
