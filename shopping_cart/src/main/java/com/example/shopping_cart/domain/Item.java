@@ -1,4 +1,4 @@
-package com.example.auth_service.domain.shoppingcart;
+package com.example.shopping_cart.domain;
 
 import java.math.BigDecimal;
 

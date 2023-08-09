@@ -7,10 +7,13 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.order_service.domain.Order;
@@ -28,7 +31,11 @@ public class OrderServiceTest {
     @InjectMocks
     OrderService orderService;
 
-    private Order order;
+
+    @BeforeEach 
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
 
     @Test
@@ -59,9 +66,10 @@ public class OrderServiceTest {
 
         when(orderRepository.findAll()).thenReturn(allOrders);
 
-        assertEquals(orderService.getAll().size(), 1);
+        Long id = orderService.getOne(2L).orElse(null).getId();
 
-        assertEquals(orderService.getOne(2L).get(), 2L);
+        assertEquals(1, orderService.getAll().size());
+        assertEquals( id, 2L);
     }
 
 

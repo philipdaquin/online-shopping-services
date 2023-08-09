@@ -1,15 +1,21 @@
-package com.example.auth_service.domain.payment;
+package com.example.shopping_cart.domain;
 
 import java.io.Serializable;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.example.auth_service.domain.Address;
-import com.example.auth_service.domain.actors.Account;
+import com.example.shopping_cart.domain.Address;
+import com.example.shopping_cart.domain.Account;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 /**

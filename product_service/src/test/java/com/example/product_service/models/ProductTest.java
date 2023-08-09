@@ -1,11 +1,8 @@
 package com.example.product_service.models;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
-
-import javax.xml.validation.Validator;
 
 import org.junit.jupiter.api.Test;
 
