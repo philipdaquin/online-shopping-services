@@ -20,6 +20,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
@@ -60,8 +61,9 @@ public class Order implements Serializable {
     @Column(name = "ordered_at", nullable = false)
     private Instant orderedAt;
 
+    @OneToMany(mappedBy = "order")
     @NotNull
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "order" }, allowSetters = true)
     private List<OrderLog> logs = new ArrayList<>();
 
     
@@ -80,6 +82,15 @@ public class Order implements Serializable {
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
     public void setTotalPrice(BigDecimal totalPrice) { this.totalPrice = totalPrice; }
     public void setOrderedAt(Instant orderedAt) { this.orderedAt = orderedAt; }
+
+
+    // Calculate the total price 
+    public void calculateTotalPrice() { 
+        if (quantity == null || product == null) { 
+            this.totalPrice = product.getPrice().multiply(new BigDecimal(quantity)) ; 
+        }
+    }
+
 
     public void setLogs(List<OrderLog> log) {this.logs = log; }
     

@@ -18,7 +18,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: password
-    url: jdbc:postgresql://localhost:5432/productdb
+    url: jdbc:postgresql://localhost:5432/ordersdb
   
   jpa:
     generate-ddl: true
@@ -28,7 +28,7 @@ spring:
     database: postgresql
     # when you launch the first time -- switch this from `update` to `create`
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

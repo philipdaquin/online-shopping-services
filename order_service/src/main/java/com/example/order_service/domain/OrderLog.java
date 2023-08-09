@@ -1,32 +1,60 @@
 package com.example.order_service.domain;
 
+import java.time.Instant;
 import java.util.Date;
 
-import com.example.order_service.domain.enums.OrderStatus;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.example.order_service.domain.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
+@Entity
+@Table(name = "order_logs")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class OrderLog {
 
-    @NotNull
-    private Long orderId;
+    @Id    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private Date createdAt;
+    @NotNull
+    @Column(name = "createdAt", nullable = false)
+    private Instant createdAt;
     
+    @NotNull    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
     private OrderStatus status;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "logs" }, allowSetters = true)
+    private Order order;
 
     public OrderLog() { }
 
-    public Long getOrderId() {
-        return orderId;
+    public Long getId() {
+        return id;
     }
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setId(Long id) {
+        this.id = id;
     }
-    public Date getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
     public OrderStatus getStatus() {
