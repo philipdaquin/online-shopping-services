@@ -52,6 +52,12 @@ public class Order implements Serializable {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private OrderStatus orderStatus;
+
     @NotNull
     @DecimalMin(value = "0")
     @Column(name = "total_price", precision = 21, scale = 2, nullable = false)

@@ -25,9 +25,10 @@ import com.example.order_service.error.BadRequestException;
 import com.example.order_service.repository.OrderRepository;
 import com.example.order_service.services.OrderService;
 
+import io.swagger.annotations.ApiModel;
 import jakarta.validation.Valid;
 
-
+@ApiModel(description = "Orders API")
 @RestController
 @RequestMapping(name = "/api")
 public class OrderController {
