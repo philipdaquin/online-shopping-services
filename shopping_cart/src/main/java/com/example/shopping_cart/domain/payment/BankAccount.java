@@ -1,11 +1,11 @@
-package com.example.shopping_cart.domain;
+package com.example.shopping_cart.domain.payment;
 
 import java.io.Serializable;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.example.shopping_cart.domain.Account;
+import com.example.shopping_cart.domain.accounts.Account;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Id;
@@ -16,7 +16,7 @@ import jakarta.validation.constraints.NotNull;
  * Bank Account
  */
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class BankAccount implements Serializable {
+public class BankAccount extends Payment implements Serializable {
     
     private static final Long serialVersionID = 1L;
 

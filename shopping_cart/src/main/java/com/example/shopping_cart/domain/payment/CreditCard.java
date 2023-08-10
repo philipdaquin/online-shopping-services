@@ -1,4 +1,4 @@
-package com.example.shopping_cart.domain;
+package com.example.shopping_cart.domain.payment;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.example.shopping_cart.domain.Address;
-import com.example.shopping_cart.domain.Account;
+import com.example.shopping_cart.domain.accounts.Account;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -22,7 +22,7 @@ import jakarta.validation.constraints.NotNull;
  * CreditCard info
  */
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class CreditCard implements Serializable {
+public class CreditCard extends Payment implements Serializable {
 
     private static final Long serialVersionID = 1L;
 

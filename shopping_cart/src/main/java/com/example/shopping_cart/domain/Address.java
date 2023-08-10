@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

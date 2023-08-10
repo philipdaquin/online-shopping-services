@@ -1,62 +1,19 @@
-package com.example.order_service.domain;
+package com.example.shopping_cart.domain.product;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import io.swagger.annotations.ApiModel;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotNull;
-
-/*
-    Product Object 
- */
-@Entity
-@Table(name = "product")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Product implements Serializable {
 
     private static final long serialVersionId = 1L;
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-
-    @NotNull
-    @Column(name = "name", nullable = false)
     public String name;
-
-    @NotNull
-    @DecimalMin(value = "0")
-    @Column(name = "price", nullable = false, precision = 21, scale = 2)
     public BigDecimal price;
-
-    @Column(name = "description", nullable = true)
     public String description;
-    
-    @NotNull
-    @Column(name = "availableItemCount", nullable = true)    
     public Long availableItemCount;
-    
-    // A `Product` can belong to `ProductCategory` objects
-    @ManyToOne(optional = false)
-    @NotNull
-    @JsonIgnoreProperties(value = {"products"}, allowSetters = true)
     public ProductCategory productCategory;
 
-
-    //
     //  Product Getters 
     //
     public Long getId() { 
