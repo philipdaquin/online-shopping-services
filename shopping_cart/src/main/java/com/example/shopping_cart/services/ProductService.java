@@ -22,10 +22,18 @@ public class ProductService {
         this.restTemplate = rest;
     }
 
-    public Optional<Product> getProductById(final Long id) { 
-        Product response = restTemplate.getForObject(ROOT_URI + "/" + id , Product.class);
 
-        return Optional.ofNullable(response);
+    /**
+     * 
+     * 
+     * 
+     * @param id
+     * @return
+     */
+    public Optional<Product> getProductById(final Long id) { 
+        ResponseEntity<Product> response = restTemplate.getForEntity(ROOT_URI + "/" + id , Product.class);
+
+        return Optional.ofNullable(response.getBody());
     }
 
 }

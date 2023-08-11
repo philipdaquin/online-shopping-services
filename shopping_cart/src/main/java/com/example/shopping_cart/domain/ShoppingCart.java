@@ -6,12 +6,9 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.example.shopping_cart.domain.enums.OrderStatus;
 import com.example.shopping_cart.domain.orders.Order;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
@@ -19,10 +16,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public class ShoppingCart implements Serializable {
@@ -82,6 +77,11 @@ public class ShoppingCart implements Serializable {
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
+
+    public void setOrder(Set<Order> orders) { 
+        this.orders = orders;
+    }
+
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
@@ -94,11 +94,43 @@ public class ShoppingCart implements Serializable {
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
-    public boolean addItem() {
-        return true;
+
+    /**
+     * - Stream through each orders and add
+     */
+    public void calculateTotalPrice() { 
+        BigDecimal newPrice = orders
+            .stream()
+            .map(Order::getTotalPrice)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        this.setTotalPrice(newPrice);
+    }   
+
+    /**
+     * Adding new orders 
+     * - add order 
+     * - update shopping cart 
+     * 
+     * @param order
+     * @return
+     */
+    public ShoppingCart addOrder(Order order) {
+        this.orders.add(order);
+        calculateTotalPrice();
+
+        return this;
     }
-    public boolean removeItem() { 
-        return true;
+
+    /**
+     * Remove orders and update the current price 
+     * 
+     * @param order
+     * @return
+     */
+    public ShoppingCart removeItem(Order order) { 
+        this.orders.remove(order);
+        calculateTotalPrice();
+        return this;
     }
 
 

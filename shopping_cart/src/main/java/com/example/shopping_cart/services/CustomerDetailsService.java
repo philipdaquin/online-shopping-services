@@ -8,14 +8,17 @@ import com.example.shopping_cart.domain.accounts.CustomerDetails;
 
 @Service
 public class CustomerDetailsService {
-    
 
+    private final RestTemplate restTemplate;
 
-    RestTemplate restTemplate;
-
-	final String ROOT_URI = "https://localhost:8080/springData/person";
+	private static final String ROOT_URI = "https://localhost:8080/api/customer/";
 
     private CustomerDetails customerDetails;
+
+    public CustomerDetailsService(RestTemplate rest) { 
+        this.restTemplate = rest;
+    }
+
 
     /**
      * Get customer details from Accounts Service
@@ -23,8 +26,9 @@ public class CustomerDetailsService {
      * @param productId
      * @return
      */ 
-    public CustomerDetails getCustomerDetails(Long productId) {
-        ResponseEntity<CustomerDetails> response = restTemplate.getForEntity(ROOT_URI, CustomerDetails.class);
+    public CustomerDetails getCustomerDetails(Long customerId) {
+        ResponseEntity<CustomerDetails> response = restTemplate
+            .getForEntity(ROOT_URI + "/" + customerId, CustomerDetails.class);
         return response.getBody();
     }
 

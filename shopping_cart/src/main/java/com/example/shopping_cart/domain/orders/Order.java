@@ -41,7 +41,7 @@ public class Order implements Serializable {
 
     // Calculate the total price 
     public void calculateTotalPrice() { 
-        if (quantity == null || product == null) { 
+        if (quantity != null || product != null) { 
             this.totalPrice = product.getPrice().multiply(new BigDecimal(quantity)) ; 
         }
     }
@@ -75,6 +75,7 @@ public class Order implements Serializable {
     public Order build() { 
         return this;
     }
+
 
     public void setLogs(List<OrderLog> log) {this.logs = log; }
     

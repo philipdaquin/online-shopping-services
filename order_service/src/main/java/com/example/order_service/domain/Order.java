@@ -72,6 +72,10 @@ public class Order implements Serializable {
     @JsonIgnoreProperties(value = { "order" }, allowSetters = true)
     private List<OrderLog> logs = new ArrayList<>();
 
+    // @ManyToOne(optional = false)
+    // @NotNull
+    // @JsonIgnoreProperties(value = { })
+    // private ShoppingCart cart;
     
     public Long getId() { return id; }
     public OrderStatus getStatus() { return status; }
