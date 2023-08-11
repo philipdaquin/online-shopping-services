@@ -1,0 +1,21 @@
+
+
+
+server:
+    port: 8085
+spring: 
+    main: 
+        web-application-type: reactive
+    application:
+        name: config_server
+    cloud:
+        config:
+            server:
+                git:
+                    uri: https://github.com/spring-cloud-samples/config-repo
+                    # username: Rapter1990
+                    # password: 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
+                    # uri: https://github.com/Rapter1990/springappconfig
+                    # clone-on-start: true
+
+

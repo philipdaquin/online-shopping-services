@@ -66,7 +66,7 @@ public class ShoppingCartController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PatchMapping(name = "/cart/{id}")
+    @PatchMapping(name = "/cart/{id}", consumes = "application/merge-patch+json")
     ResponseEntity<ShoppingCart> partialUpdateShoppingCart(
         @PathVariable final Long id, 
         @Valid @RequestBody ShoppingCart newCart
@@ -101,6 +101,8 @@ public class ShoppingCartController {
     // ) {
     //     shoppingCartService.removeProductToOrderForUser(id, customerId)
     // }
-        
+
+    void getActiveCartByUser() {}
+    void removeOrder() {}
     void addOrder() {}
 }
