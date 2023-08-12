@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verifyNoInteractions;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -40,17 +41,9 @@ public class CustomerDetailsRepositoryTest {
         CustomerDetails response = customerDetailsRepository.save(mock);
         Optional<CustomerDetails> getReturn = customerDetailsRepository.findById(response.getId());
 
-        
-
-
-        
-
-
-
         assertNotNull(response);
+        assertNotNull(getReturn);
         assertEquals(response.getId(), mock.getId());
-
-
     }
 
     @Test   
@@ -70,14 +63,60 @@ public class CustomerDetailsRepositoryTest {
     }
     @Test   
     public void CustomerDetails_GetAll_ReturnsAListOfCustomers() {
+        var customer = new CustomerDetailServiceTest();
+
+        CustomerDetails mock = customer.createMockOne();
+        Account account = mock.getAccount();
+        accountRepository.save(account);
+        customerDetailsRepository.save(mock);
+
+
+        var customerOne = new CustomerDetailServiceTest();
+
+        CustomerDetails mockTwo = customerOne.createMockTwo();
+        Account accountTwo = mockTwo.getAccount();
+        accountTwo.setEmail("asdasdasdasdasdasdasdasd@adsdasdas");
+        accountTwo.setCreatedDate(Instant.parse("2023-08-10T10:00:00Z"));
+        accountRepository.save(accountTwo);
+        customerDetailsRepository.save(mockTwo);
+
+        assertEquals(customerDetailsRepository.count(), 2);
+
 
     }
     @Test   
     public void CustomerDetails_Delete_ReturnsVoid() {
+        var customer = new CustomerDetailServiceTest();
+
+        CustomerDetails mock = customer.createMockOne();
+        Account account = mock.getAccount();
+        accountRepository.save(account);
+        customerDetailsRepository.save(mock);
+
+        assertEquals(customerDetailsRepository.count(), 1);
+
+        customerDetailsRepository.delete(mock);
+        assertEquals(customerDetailsRepository.count(), 0);
+
 
     }
     @Test   
     public void CustomerDetails_PartialUpdateDetails_ReturnsUpdatedDetails() {
+        String email = "test@email.com";
+
+        var customer = new CustomerDetailServiceTest();
+
+        CustomerDetails mock = customer.createMockOne();
+        Account account = mock.getAccount();
+        accountRepository.save(account);
+        var response = customerDetailsRepository.save(mock);
+
+
+        account.setEmail(email);
+        response.setAccount(account);
+        accountRepository.save(account);
+        CustomerDetails updated = customerDetailsRepository.save(mock);
+        assertEquals(updated.getAccount().getEmail(), email);
 
     }
 }
