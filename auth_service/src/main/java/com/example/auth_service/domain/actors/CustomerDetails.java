@@ -34,7 +34,7 @@ public class CustomerDetails implements Serializable {
 
     @OneToOne(optional = false)
     @NotNull
-    @JoinColumn(unique = true)
+    @Column(name = "account", nullable = false)
     private Account account;
 
     @NotNull
