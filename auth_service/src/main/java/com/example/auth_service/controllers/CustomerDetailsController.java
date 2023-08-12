@@ -44,5 +44,10 @@ public class CustomerDetailsController {
         
         return ResponseEntity.ok().body(customerDetails);   
     }
+
+    void createCustomerDetails() {}
+    void partialUpdateDetails() {} 
+    void deleteCustomerDertails() {}
+    void getAllCustomerDetails() {}
  
 }
