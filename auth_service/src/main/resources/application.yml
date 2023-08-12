@@ -11,7 +11,7 @@ spring:
       matching-strategy: ant-path-matcher
   datasource:
     password: password
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/new_accountsdb
     username: postgres
   jpa:
     generate-ddl: true
@@ -23,3 +23,6 @@ spring:
         format_sql: true
     show-sql: true
     open-in-view: false
+jwt:
+  secret: aSecretKey
+  expiration.time: 9000000

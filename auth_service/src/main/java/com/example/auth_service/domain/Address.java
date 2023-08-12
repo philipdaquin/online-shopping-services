@@ -31,6 +31,15 @@ public class Address implements Serializable {
     @NotNull
     private String country;
 
+
+    public Address() {}
+    public Address addressLineOne(String addressLineOne) { this.addressLineOne = addressLineOne; return this;}
+    public Address addressLineTwo(String addressLineTwo) { this.addressLineTwo = addressLineTwo; return this;}
+    public Address city(String city) { this.city = city; return this;}
+    public Address state(String state) { this.state = state; return this;}
+    public Address zipCode(String zipCode) { this.zipCode = zipCode; return this;}
+    public Address country(String country) { this.country = country; return this;}
+
     
     public String getAddressLineOne() { return addressLineOne; }
     public String getAddressLineTwo() { return addressLineTwo; }

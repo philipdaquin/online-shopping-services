@@ -47,8 +47,8 @@ public class AccountController {
      * @param passwordDTO
      * @return
      */
-    @PostMapping(name = "/create-account")
-    public ResponseEntity<Account> registerAccount(
+    @PostMapping(path =  "/create-account")
+    public ResponseEntity<Account> createAccount(
         @Valid @RequestBody RegisterDTO registerDto, 
         @Valid @RequestBody PasswordDTO passwordDTO
     ) { 
@@ -65,7 +65,7 @@ public class AccountController {
      * @param accountId
      * @return
      */
-    @DeleteMapping(name = "/delete-account/{id}")
+    @DeleteMapping(path =  "/delete-account/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable final Long id) {
 
         if (!accountRepository.existsById(id)) throw new BadRequestException("Account Id not found!");
@@ -81,7 +81,7 @@ public class AccountController {
      * @param id
      * @return
      */
-    @GetMapping(name = "/account/{id}")
+    @GetMapping(path =  "/account/{id}")
     public ResponseEntity<Account> getAccount(@PathVariable Long id) {
         Account response = accountService
             .getOne(id)
@@ -89,8 +89,8 @@ public class AccountController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping(name = "/account/change-password")
-    public void changePassword(@Valid @RequestBody ChangePasswordDTO passwordDTO, final Long accountId) {
+    @PostMapping(path =  "/account/change-password")
+    public void changeToNewPassword(@Valid @RequestBody ChangePasswordDTO passwordDTO, final Long accountId) {
         if (!passwordDTO.checkValidity()) throw new InvalidPasswordException();
 
         if (!accountRepository.existsById(accountId)) throw new NotFoundException();

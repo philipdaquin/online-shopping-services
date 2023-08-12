@@ -9,17 +9,24 @@ import com.example.auth_service.domain.Address;
 import com.example.auth_service.domain.actors.Account;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 
 /**
  * CreditCard info
  */
+@Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CreditCard implements Serializable {
 
     private static final Long serialVersionID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -34,6 +41,7 @@ public class CreditCard implements Serializable {
     @NotNull
     private Address billingAddress;
 
+    @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = {"creditCards"}, allowSetters = true)
     private Account account;

@@ -20,10 +20,16 @@ import jakarta.validation.constraints.NotNull;
 /**
  * Bank Account
  */
+@Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class BankAccount implements Serializable {
     
     private static final Long serialVersionID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
 
     private String bankName;
     

@@ -52,7 +52,7 @@ public class CustomerDetailsController {
      * @param id
      * @return
      */
-    @GetMapping("/customer/{id}")
+    @GetMapping(path = "/customer/{id}")
     public ResponseEntity<CustomerDetails> getCustomerDetails(@PathVariable final Long id) { 
         CustomerDetails customerDetails = customerDetailService
             .getOne(id)
@@ -67,7 +67,7 @@ public class CustomerDetailsController {
      * @return
      * @throws URISyntaxException
      */
-    @PostMapping(name = "/customer")
+    @PostMapping(path =  "/customer")
     ResponseEntity<CustomerDetails> createCustomerDetails(@Valid @RequestBody CustomerDetails customerDetails) throws URISyntaxException {
         CustomerDetails newCustomer = customerDetailService.save(customerDetails);
 
@@ -82,8 +82,8 @@ public class CustomerDetailsController {
      * @param customerDTO
      * @return
      */
-    @PatchMapping(name = "/customer/{id}", consumes = "applications/merge-patch+json")
-    ResponseEntity<CustomerDetails> partialUpdateDetails(
+    @PatchMapping(path =  "/customer/{id}", consumes = "applications/merge-patch+json")
+    ResponseEntity<CustomerDetails> partialUpdateCustomerDetails(
         @PathVariable(value = "id", required = false) final Long id, 
         @Valid @RequestBody CustomerDetails customerDTO
     ) {
@@ -104,7 +104,7 @@ public class CustomerDetailsController {
      * @param customerId
      * @return
      */
-    @DeleteMapping(name = "/customer/{id}")
+    @DeleteMapping(path =  "/customer/{id}")
     ResponseEntity<Void> deleteCustomerDertails(@PathVariable Long customerId) {
 
         if (!customerDetailsRepository.existsById(customerId)) throw new NotFoundException();
@@ -119,7 +119,7 @@ public class CustomerDetailsController {
      * @param pageable
      * @return
      */
-    @GetMapping(name = "/customer")
+    @GetMapping(path = "/customer")
     ResponseEntity<List<CustomerDetails>> getAllCustomerDetails(Pageable pageable) {
         List<CustomerDetails> customers = customerDetailService.getAll(pageable);
 

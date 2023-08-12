@@ -34,15 +34,18 @@ public class CustomerDetails implements Serializable {
 
     @OneToOne(optional = false)
     @NotNull
-    @Column(name = "account", nullable = false)
+    @JoinColumn(unique = true)
     private Account account;
 
     @NotNull
-    @Column(name = "address", nullable = true)
+    @Column(name = "address", nullable = false)
     private Address address;
 
 
     public CustomerDetails() {}
+
+
+
 
     public Long getId() { return id; }
     public Account getAccount() { return account; }

@@ -62,7 +62,7 @@ public class Account extends AbstractAuditingEntity implements Serializable {
 
     @JsonIgnore
     @NotNull
-    @Size(min = 60, max = 60)
+    @Size(min = 0, max = 60)
     @Column(name = "password_hash", length = 60, nullable = false)
     private String password;
 
@@ -84,20 +84,136 @@ public class Account extends AbstractAuditingEntity implements Serializable {
 
     public Account() {}
 
-    public Long getId() { return id; }
-    public String getFirstName() { return firstName; }
-    public String getLastName() { return lastName; }
-    public String getEmail() { return email; }
-    public String getMobile() { return mobile; }
-    public String getImageUrl() { return imageUrl; }
-    public String getPassword() { return password; }
+
+    public Account firstName(String name) { this.firstName = name; return this;}
+    public Account lastName(String lastName) { this.lastName = lastName; return this; }
+    public Account email(String email) { this.email = email; return this; }
+    public Account mobile(String mobile) { this.mobile = mobile; return this; }
+    public Account imageUrl(String imageUrl) { this.imageUrl = imageUrl; return this; }
+    public Account password(String password) { this.password = password; return this; }
+    public Account accountStatus(AccountStatus accountStatus) { this.accountStatus = accountStatus; return this; }
+    public Account bankAccounts(Set<BankAccount> bankAccounts) { this.bankAccounts = bankAccounts; return this; }
+    public Account creditCards(Set<CreditCard> creditCards) { this.creditCards = creditCards; return this; }
+    public Account build() { return this; }
 
 
-    public void setId(Long id) { this.id = id; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
-    public void setEmail(String email) { this.email = email; }
-    public void setMobile(String mobile) { this.mobile = mobile; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
-    public void setPassword(String password) { this.password = password; }
+    public static long getSerialverionid() {
+        return serialVerionId;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+
+    public String getLastName() {
+        return lastName;
+    }
+
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    public String getMobile() {
+        return mobile;
+    }
+
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+
+    public Set<BankAccount> getBankAccounts() {
+        return bankAccounts;
+    }
+
+
+    public void setBankAccounts(Set<BankAccount> bankAccounts) {
+        this.bankAccounts = bankAccounts;
+    }
+
+
+    public Set<CreditCard> getCreditCards() {
+        return creditCards;
+    }
+
+
+    public void setCreditCards(Set<CreditCard> creditCards) {
+        this.creditCards = creditCards;
+    }
+
+
+    @Override
+    public boolean equals(Object arg0) {
+        // TODO Auto-generated method stub
+        return super.equals(arg0);
+    }
+
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString();
+    }
+
+   
 }
