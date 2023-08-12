@@ -1,5 +1,6 @@
 package com.example.auth_service.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.auth_service.domain.Address;
 import com.example.auth_service.domain.actors.CustomerDetails;
 import com.example.auth_service.repository.CustomerDetailsRepository;
+
+import net.bytebuddy.description.annotation.AnnotationValue.Sort;
 
 @Service
 @Transactional
@@ -50,8 +53,8 @@ public class CustomerDetailService {
      * @param pageable
      * @return
      */
-    public Page<CustomerDetails> getAll(Pageable pageable) { 
-        return customerDetailsRepository.findAll(pageable);
+    public List<CustomerDetails> getAll(Pageable pageable) { 
+        return customerDetailsRepository.findAll(pageable).toList();
     }
 
     /**
