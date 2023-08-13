@@ -22,11 +22,18 @@ import com.example.auth_service.service.CustomerDetailServiceTest;
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class CustomerDetailsRepositoryTest {
     
-    @Autowired
     private CustomerDetailsRepository customerDetailsRepository;
+
+    private AccountRepository accountRepository;
     
     @Autowired
-    private AccountRepository accountRepository;
+    public CustomerDetailsRepositoryTest(
+        CustomerDetailsRepository customerDetailsRepository,
+        AccountRepository accountRepository
+    ) {
+        this.customerDetailsRepository = customerDetailsRepository;
+        this.accountRepository = accountRepository; 
+    }
 
 
     @Test

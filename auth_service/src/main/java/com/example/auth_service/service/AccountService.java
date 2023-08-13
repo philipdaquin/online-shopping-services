@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.auth_service.domain.Address;
 import com.example.auth_service.domain.actors.Account;
 import com.example.auth_service.domain.actors.CustomerDetails;
+import com.example.auth_service.errors.BadRequestException;
 import com.example.auth_service.errors.EmailAlreadyExistsException;
 import com.example.auth_service.repository.AccountRepository;
 import com.example.auth_service.service.dto.RegisterDTO;
@@ -29,17 +32,21 @@ public class AccountService {
     
     private final AccountRepository accountRepository;
 
+    @Autowired
     private final PasswordEncoder passwordEncoder;
 
     private final CustomerDetailService customerDetailService;
 
+    private final CacheManager cacheManager;
+    
     public AccountService(
         AccountRepository accountRepository,
         PasswordEncoder passwordEncoder,
-        CustomerDetailService customerDetailService
+        CustomerDetailService customerDetailService,
+        CacheManager cacheManager
     ) { 
         this.accountRepository = accountRepository;
-
+        this.cacheManager = cacheManager;
         this.passwordEncoder = passwordEncoder;
         this.customerDetailService = customerDetailService;
     }
@@ -50,9 +57,11 @@ public class AccountService {
      */
     public Account registerAccount(RegisterDTO registerDTO,  String password) {
         // Check if the user already exist 
-        if (!accountRepository.findByEmailIgnoreCase(registerDTO.getEmail()).isPresent()) { 
+        if (accountRepository.findByEmailIgnoreCase(registerDTO.getEmail()).isPresent()) { 
             throw new EmailAlreadyExistsException();
         } 
+
+        if( password == null) throw new BadRequestException("Missing password");
 
         // Create new account
         Account account = new Account();

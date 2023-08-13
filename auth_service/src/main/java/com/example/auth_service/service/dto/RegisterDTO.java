@@ -24,7 +24,6 @@ public class RegisterDTO {
 
     private String mobile;
     private String imageUrl;
-    
     // Metadata 
     private String createdBy;
     private Instant createdDate;
@@ -41,7 +40,6 @@ public class RegisterDTO {
     private String country;
 
     public RegisterDTO() {}
-
 
     public Long getId() { return id; }
     public String getEmail() { return email; }
