@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,7 +29,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping(name = "/api")
+@RequestMapping(value = "/api")
 public class CustomerDetailsController {
     
     private final Logger log = LoggerFactory.getLogger(CustomerDetailsController.class);
@@ -37,6 +38,7 @@ public class CustomerDetailsController {
 
     private final CustomerDetailsRepository customerDetailsRepository;
 
+    @Autowired
     public CustomerDetailsController(
         CustomerDetailService customerDetailService,
         CustomerDetailsRepository customerDetailsRepository
@@ -52,7 +54,7 @@ public class CustomerDetailsController {
      * @param id
      * @return
      */
-    @GetMapping(path = "/customer/{id}")
+    @GetMapping("/customer/{id}")
     public ResponseEntity<CustomerDetails> getCustomerDetails(@PathVariable final Long id) { 
         CustomerDetails customerDetails = customerDetailService
             .getOne(id)
@@ -67,12 +69,16 @@ public class CustomerDetailsController {
      * @return
      * @throws URISyntaxException
      */
-    @PostMapping(path =  "/customer")
+    @PostMapping("/customer")
     ResponseEntity<CustomerDetails> createCustomerDetails(@Valid @RequestBody CustomerDetails customerDetails) throws URISyntaxException {
+        
+        log.info("Receive a request from user!");
+        // if (customerDetails.getId() != null) throw new BadRequestException("A new customer details cannot already have an ID");
+        
         CustomerDetails newCustomer = customerDetailService.save(customerDetails);
 
         return ResponseEntity
-            .created(new URI("/customer" + "/" + newCustomer.getId()))
+            .created(new URI("/api/customer/" + newCustomer.getId()))
             .build();
     }
 
@@ -82,7 +88,7 @@ public class CustomerDetailsController {
      * @param customerDTO
      * @return
      */
-    @PatchMapping(path =  "/customer/{id}", consumes = "applications/merge-patch+json")
+    @PatchMapping(value = "/customer/{id}", consumes = "applications/merge-patch+json")
     ResponseEntity<CustomerDetails> partialUpdateCustomerDetails(
         @PathVariable(value = "id", required = false) final Long id, 
         @Valid @RequestBody CustomerDetails customerDTO
@@ -104,7 +110,7 @@ public class CustomerDetailsController {
      * @param customerId
      * @return
      */
-    @DeleteMapping(path =  "/customer/{id}")
+    @DeleteMapping("/customer/{id}")
     ResponseEntity<Void> deleteCustomerDertails(@PathVariable Long customerId) {
 
         if (!customerDetailsRepository.existsById(customerId)) throw new NotFoundException();
@@ -119,7 +125,7 @@ public class CustomerDetailsController {
      * @param pageable
      * @return
      */
-    @GetMapping(path = "/customer")
+    @GetMapping("/customer")
     ResponseEntity<List<CustomerDetails>> getAllCustomerDetails(Pageable pageable) {
         List<CustomerDetails> customers = customerDetailService.getAll(pageable);
 

@@ -2,6 +2,7 @@ package com.example.auth_service.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +31,10 @@ public class AccountController {
     private final Logger log = LoggerFactory.getLogger(AccountController.class);
 
     private final AccountRepository accountRepository;
+    
     private final AccountService accountService;
 
+    @Autowired
     public AccountController(
         AccountRepository accountRepository,
         AccountService accountService
@@ -47,7 +50,7 @@ public class AccountController {
      * @param passwordDTO
      * @return
      */
-    @PostMapping(path =  "/create-account")
+    @PostMapping("/create-account")
     public ResponseEntity<Account> createAccount(
         @Valid @RequestBody RegisterDTO registerDto, 
         @Valid @RequestBody PasswordDTO passwordDTO
@@ -65,7 +68,7 @@ public class AccountController {
      * @param accountId
      * @return
      */
-    @DeleteMapping(path =  "/delete-account/{id}")
+    @DeleteMapping("/delete-account/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable final Long id) {
 
         if (!accountRepository.existsById(id)) throw new BadRequestException("Account Id not found!");
@@ -81,7 +84,7 @@ public class AccountController {
      * @param id
      * @return
      */
-    @GetMapping(path =  "/account/{id}")
+    @GetMapping("/account/{id}")
     public ResponseEntity<Account> getAccount(@PathVariable Long id) {
         Account response = accountService
             .getOne(id)
@@ -89,7 +92,7 @@ public class AccountController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping(path =  "/account/change-password")
+    @PostMapping("/account/change-password")
     public void changeToNewPassword(@Valid @RequestBody ChangePasswordDTO passwordDTO, final Long accountId) {
         if (!passwordDTO.checkValidity()) throw new InvalidPasswordException();
 

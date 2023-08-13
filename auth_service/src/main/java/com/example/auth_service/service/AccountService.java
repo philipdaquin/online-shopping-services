@@ -37,16 +37,13 @@ public class AccountService {
 
     private final CustomerDetailService customerDetailService;
 
-    private final CacheManager cacheManager;
     
     public AccountService(
         AccountRepository accountRepository,
         PasswordEncoder passwordEncoder,
-        CustomerDetailService customerDetailService,
-        CacheManager cacheManager
+        CustomerDetailService customerDetailService
     ) { 
         this.accountRepository = accountRepository;
-        this.cacheManager = cacheManager;
         this.passwordEncoder = passwordEncoder;
         this.customerDetailService = customerDetailService;
     }

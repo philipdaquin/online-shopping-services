@@ -37,8 +37,7 @@ public class CustomerDetails implements Serializable {
     @JoinColumn(unique = true)
     private Account account;
 
-    @NotNull
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private Address address;
 
 
