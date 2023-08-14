@@ -18,7 +18,10 @@ import com.example.auth_service.domain.actors.Account;
 import com.example.auth_service.domain.actors.CustomerDetails;
 import com.example.auth_service.errors.BadRequestException;
 import com.example.auth_service.errors.EmailAlreadyExistsException;
+import com.example.auth_service.errors.InvalidPasswordException;
+import com.example.auth_service.errors.NotFoundException;
 import com.example.auth_service.repository.AccountRepository;
+import com.example.auth_service.security.SecurityState;
 import com.example.auth_service.service.dto.RegisterDTO;
 
 /*  
@@ -37,15 +40,19 @@ public class AccountService {
 
     private final CustomerDetailService customerDetailService;
 
+    private final SecurityState securityState;
+
     @Autowired
     public AccountService(
         AccountRepository accountRepository,
         PasswordEncoder passwordEncoder,
-        CustomerDetailService customerDetailService
+        CustomerDetailService customerDetailService,
+        SecurityState securityState
     ) { 
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
         this.customerDetailService = customerDetailService;
+        this.securityState = securityState;
     }
 
     /*
@@ -169,8 +176,18 @@ public class AccountService {
      * @param newPassword
      */
     @Transactional
-    public void changePassword(String currentPassword, String newPassword) {
-        // todo
+    public void changePassword(String currentPassword, String newPassword)  {
+        securityState 
+            .getUserFromCurrentContext()
+            .ifPresent(user -> {
+
+                if (!user.getPassword().equals(currentPassword)) 
+                    throw new InvalidPasswordException();
+        
+                String encodedPassword = passwordEncoder.encode(newPassword);
+                user.setPassword(encodedPassword);
+            });
+        
     }
 
 

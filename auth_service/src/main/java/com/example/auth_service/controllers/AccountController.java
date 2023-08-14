@@ -24,6 +24,7 @@ import com.example.auth_service.service.dto.PasswordDTO;
 import com.example.auth_service.service.dto.RegisterDTO;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -84,6 +85,11 @@ public class AccountController {
         accountService.deleteAccount(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/auth")
+    public String isAuthenticated(HttpServletRequest request) { 
+        return request.getRemoteUser();
     }
 
     /**

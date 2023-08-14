@@ -46,6 +46,7 @@ public class SecurityConfig  {
             // Authentication Filter 
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             
+            
 
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/").permitAll()
@@ -53,7 +54,7 @@ public class SecurityConfig  {
                 .authenticated()
             )
 
-            .formLogin(form -> form 
+            .formLogin(form -> form
                 .loginPage("/login")
                 .permitAll()
             )
