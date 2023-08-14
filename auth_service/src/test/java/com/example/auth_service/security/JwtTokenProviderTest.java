@@ -24,11 +24,11 @@ public class JwtTokenProviderTest {
     @Mock
     private AccountService accountService; 
 
-    @BeforeEach
-    public void init() { 
+    // @BeforeEach
+    // public void init() { 
 
-        tokenProvider = new JwtTokenProvider(accountService);
-    }
+    //     tokenProvider = new JwtTokenProvider(accountService);
+    // }
 
 
     @Test

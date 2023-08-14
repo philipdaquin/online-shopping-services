@@ -62,7 +62,7 @@ public class AuthenticateController {
         // Update security context 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwtToken = tokenProvider.generateToken(loginDto.getEmail());
+        String jwtToken = tokenProvider.generateToken(authentication);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(tokenProvider.AUTHENTICATION_HEADER, "Bearer " + jwtToken);

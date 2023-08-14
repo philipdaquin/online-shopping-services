@@ -30,7 +30,7 @@ public class SecurityConfig  {
     
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
-    private DomainUserService domainUserService;
+    private final DomainUserService domainUserService;
     
 
     @Bean
