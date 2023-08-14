@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity(debug = true)
-@EnableMethodSecurity(prePostEnabled = true, securedEnabled = false)
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig  {
     
