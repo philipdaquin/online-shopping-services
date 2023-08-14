@@ -3,6 +3,7 @@ package com.example.auth_service.service;
 import com.example.auth_service.domain.Address;
 import com.example.auth_service.domain.actors.Account;
 import com.example.auth_service.domain.actors.CustomerDetails;
+import com.example.auth_service.util.AddressUtil;
 
 public class CustomerDetailServiceTest {
     
@@ -13,14 +14,10 @@ public class CustomerDetailServiceTest {
 
         var account = new AccountServiceTest();
         Account accountMock = account.createMockOne();
-        Address address = new Address()
-            .addressLineOne("123 Main St")
-            .addressLineTwo("Apt 4B")
-            .city("Exampleville")
-            .state("Exampleria")
-            .zipCode("12345")
-            .country("Exampleland");
-        
+
+        AddressUtil util = new AddressUtil();
+        Address address = util.createMock();
+
         CustomerDetails mock = new CustomerDetails();
         mock.setAccount(accountMock);
         mock.setAddress(address);
@@ -31,15 +28,12 @@ public class CustomerDetailServiceTest {
     public CustomerDetails createMockTwo() {
         var account = new AccountServiceTest();
         Account accountMock = account.createMockOne();
-        Address address = new Address()
-            .addressLineOne("456 Elm Street")
-            .addressLineTwo("Unit 7C")
-            .city("Maplewood")
-            .state("New Jersey")
-            .zipCode("07040")
-            .country("United States");
+        
+        AddressUtil util = new AddressUtil();
+        Address address = util.createMockTwo();
         
         CustomerDetails mock = new CustomerDetails();
+        
         mock.setAccount(accountMock);
         mock.setAddress(address);
     

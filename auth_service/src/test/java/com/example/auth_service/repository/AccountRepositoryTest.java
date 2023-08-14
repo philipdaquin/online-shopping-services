@@ -20,7 +20,7 @@ import com.example.auth_service.service.AccountServiceTest;
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class AccountRepositoryTest {
-    
+
     @Autowired
     private AccountRepository accountRepository;
 

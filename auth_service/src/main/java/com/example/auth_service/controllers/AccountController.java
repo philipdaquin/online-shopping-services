@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(name = "/api")
+@RequestMapping("/api")
 public class AccountController {
     
     private final Logger log = LoggerFactory.getLogger(AccountController.class);
@@ -34,7 +35,6 @@ public class AccountController {
     
     private final AccountService accountService;
 
-    @Autowired
     public AccountController(
         AccountRepository accountRepository,
         AccountService accountService
@@ -43,6 +43,13 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    @GetMapping(path= "/welcome")
+    @PreAuthorize("")
+    public String getWelcome() { 
+        return "Hello there!";
+    }
+
+
     /**
      * 
      * 
@@ -50,7 +57,7 @@ public class AccountController {
      * @param passwordDTO
      * @return
      */
-    @PostMapping("/create-account")
+    @PostMapping("/register")
     public ResponseEntity<Account> createAccount(
         @Valid @RequestBody RegisterDTO registerDto, 
         @Valid @RequestBody PasswordDTO passwordDTO

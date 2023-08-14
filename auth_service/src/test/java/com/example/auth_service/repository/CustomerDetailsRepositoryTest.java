@@ -26,7 +26,6 @@ public class CustomerDetailsRepositoryTest {
 
     private AccountRepository accountRepository;
     
-    @Autowired
     public CustomerDetailsRepositoryTest(
         CustomerDetailsRepository customerDetailsRepository,
         AccountRepository accountRepository
