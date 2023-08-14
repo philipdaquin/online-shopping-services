@@ -22,6 +22,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -80,6 +83,21 @@ public class Account extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = {"account"}, allowSetters = true)
     private Set<CreditCard> creditCards = new HashSet<>();
+
+    @JsonIgnore 
+    @ManyToMany
+    @JoinTable(
+        name = "user_authorities",
+        joinColumns = {
+            @JoinColumn(name ="user_id", referencedColumnName = "id"),
+        },
+        inverseJoinColumns = { 
+            @JoinColumn(name = "authority_name", referencedColumnName = "name")
+        }
+    )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<Authority> authorities = new HashSet<>();
+    
 
 
     public Account() {}
@@ -215,5 +233,20 @@ public class Account extends AbstractAuditingEntity implements Serializable {
         return super.toString();
     }
 
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public void addAuthorities(Authority au) { 
+        this.authorities.add(au);
+    }
+    public void removeAuthority(Authority au) { 
+        this.authorities.remove(au);
+    }
    
 }

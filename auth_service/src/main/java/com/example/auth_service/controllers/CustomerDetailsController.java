@@ -112,6 +112,9 @@ public class CustomerDetailsController {
     @DeleteMapping("/customer/{id}")
     ResponseEntity<Void> deleteCustomerDertails(@PathVariable Long customerId) {
 
+        
+
+
         if (!customerDetailsRepository.existsById(customerId)) throw new NotFoundException();
 
         customerDetailService.delete(customerId);

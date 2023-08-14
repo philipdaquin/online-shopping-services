@@ -41,12 +41,17 @@ public class SecurityConfig  {
 
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest()
+                .authenticated()
             )
 
             .formLogin(form -> form 
                 .loginPage("/login")
                 .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .getLogoutSuccessHandler()
             )   
             
             .httpBasic(basic -> basic.init(http))

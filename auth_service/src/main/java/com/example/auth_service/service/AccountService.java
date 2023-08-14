@@ -173,4 +173,13 @@ public class AccountService {
         // todo
     }
 
+
+    /**
+     * 
+     */
+    @Transactional(readOnly = true)
+    public Optional<Account> getUserByEmail(String email) { 
+        return accountRepository.findByEmailIgnoreCase(email);
+    }
+
 }
