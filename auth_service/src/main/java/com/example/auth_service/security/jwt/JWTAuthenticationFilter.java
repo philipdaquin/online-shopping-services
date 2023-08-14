@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final String AUTHENTICATION_HEADER = "Authorization";
+    
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 

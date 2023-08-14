@@ -43,7 +43,7 @@ public class SecurityConfig  {
             .csrf(csrf -> csrf.disable())
             
             .cors(cors -> cors.disable())
-            
+            // Authentication Filter 
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             
 
@@ -63,6 +63,7 @@ public class SecurityConfig  {
             )   
 
             .httpBasic(basic -> basic.init(http))
+            // Authentication Provider 
             .authenticationProvider(authenticationProvider())
 
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
