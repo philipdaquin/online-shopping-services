@@ -45,8 +45,8 @@ public class AccountController {
 
     @GetMapping(path= "/welcome")
     @PreAuthorize("")
-    public String getWelcome() { 
-        return "Hello there!";
+    public ResponseEntity<String> getWelcome() { 
+        return ResponseEntity.ok("Hello there!");
     }
 
 

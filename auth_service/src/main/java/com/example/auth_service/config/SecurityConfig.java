@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity(debug = true)
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = false)
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig  {
     
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
@@ -28,9 +29,30 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception { 
 
         return http
-            .securityMatcher("/api/**")
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+            
+            .headers(headers -> headers.frameOptions(options-> options.disable() ))
+            
+            .csrf(csrf -> csrf.disable())
+            
+            .cors(cors -> cors.disable())
+            
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            
+
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/").permitAll()
+                .anyRequest().authenticated()
+            )
+
+            .formLogin(form -> form 
+                .loginPage("/login")
+                .permitAll()
+            )   
+            
+            .httpBasic(basic -> basic.init(http))
+
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
             .build();        
     }
 
@@ -43,8 +65,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { 
         return config.getAuthenticationManager();
     }
-
-    
-
 
 }
