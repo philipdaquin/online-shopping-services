@@ -177,8 +177,9 @@ public class AccountService {
      */
     @Transactional
     public void changePassword(String currentPassword, String newPassword)  {
-        securityState 
-            .getUserFromCurrentContext()
+        String email = SecurityState.getEmailFromCurrentContext();
+        
+        getUserByEmail(email)
             .ifPresent(user -> {
 
                 if (!user.getPassword().equals(currentPassword)) 

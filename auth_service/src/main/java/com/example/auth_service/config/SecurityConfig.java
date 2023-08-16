@@ -62,6 +62,7 @@ public class SecurityConfig  {
                 .logoutUrl("/logout")
                 .getLogoutSuccessHandler()
             )   
+                
 
             .httpBasic(basic -> basic.init(http))
             // Authentication Provider 
