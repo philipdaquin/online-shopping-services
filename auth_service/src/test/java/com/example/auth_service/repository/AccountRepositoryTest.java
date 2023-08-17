@@ -2,10 +2,7 @@ package com.example.auth_service.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.time.Instant;
-import java.util.HashSet;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -13,13 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.example.auth_service.domain.actors.Account;
 import com.example.auth_service.service.AccountServiceTest;
+import org.testcontainers.containers.Container;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-public class AccountRepositoryTest {
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class AccountRepositoryTest extends AbstractionContainerBaseTest {
 
     @Autowired
     private AccountRepository accountRepository;

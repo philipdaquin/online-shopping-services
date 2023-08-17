@@ -3,6 +3,7 @@ package com.example.auth_service.service.dto;
 import java.time.Instant;
 
 import com.example.auth_service.domain.Address;
+import com.example.auth_service.domain.actors.Account;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -74,5 +75,4 @@ public class RegisterDTO {
     public void setState(String state) { this.state = state; }
     public void setZipCode(String zipCode) { this.zipCode = zipCode; }
     public void setCountry(String country) { this.country = country; }
-
 }
