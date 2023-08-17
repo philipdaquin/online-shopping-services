@@ -6,7 +6,7 @@ public class AbstractionContainerBaseTest {
     static final PostgreSQLContainer psql;
 
     static { 
-        psql = new PostgreSQLContainer<>("postgres:latest");
+        psql = new PostgreSQLContainer<>("postgres:10");
         psql.start();
     }
 }
