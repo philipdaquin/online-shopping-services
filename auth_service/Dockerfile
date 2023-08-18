@@ -5,9 +5,7 @@ FROM openjdk:17
 VOLUME /tmp
 
 # Set the working directory in the container 
-ARG JAR_FILE
-
-COPY target/ auth_service.jar
+COPY target/auth_service.jar auth_service.jar
 
 # Command to run the Spring boot application  
 ENTRYPOINT [ "java", "-jar", "/auth_service.jar" ]

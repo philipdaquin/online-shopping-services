@@ -69,8 +69,8 @@ public class AccountControllerIntegrationTest {
     @Autowired
     ObjectMapper mapper;
 
-    @Autowired
-    private AccountRepository accountRepository;
+    // @Autowired
+    // private AccountRepository accountRepository;
 
     @MockBean
     private AccountService accountService;
@@ -171,7 +171,7 @@ public class AccountControllerIntegrationTest {
         var factory = new AccountServiceTest();
         Account newAccount = factory.createMockOne();
         newAccount.setId(1L);
-        accountRepository.save(newAccount);
+        // accountRepository.save(newAccount);
 
 
         mockMvc.perform(get("/api/account/1").contentType(MediaType.APPLICATION_JSON))

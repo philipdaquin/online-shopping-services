@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.auth_service.domain.actors.Account;
@@ -26,20 +28,14 @@ import com.example.auth_service.repository.AccountRepository;
  * 
  * 
  */
-@Component("userDetailsService")
+// @Component("DomainUserService")
+@Service
 public class DomainUserService implements UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(DomainUserService.class);
 
-    private final AccountRepository accountRepository;
-
-
-    public DomainUserService(
-        AccountRepository accountRepository
-    ) { 
-        this.accountRepository = accountRepository;
-    }
-
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Override
     @Transactional

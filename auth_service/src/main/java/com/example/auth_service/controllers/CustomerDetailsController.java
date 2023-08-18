@@ -87,7 +87,7 @@ public class CustomerDetailsController {
      * @param customerDTO
      * @return
      */
-    @PatchMapping(path = "/customer/{id}", consumes = "applications/merge-patch+json")
+    @PatchMapping(value = "/customer/{id}", consumes = "applications/merge-patch+json")
     ResponseEntity<CustomerDetails> partialUpdateCustomerDetails(
         @PathVariable(value = "id", required = false) final Long id, 
         @Valid @RequestBody CustomerDetails customerDTO

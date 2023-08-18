@@ -25,13 +25,19 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity(debug = true)
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
-@RequiredArgsConstructor
 public class SecurityConfig  {
     
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
     private final DomainUserService domainUserService;
     
+    public SecurityConfig(
+        JWTAuthenticationFilter jwtAuthenticationFilter,
+        DomainUserService domainUserService
+    ) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.domainUserService = domainUserService;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception { 

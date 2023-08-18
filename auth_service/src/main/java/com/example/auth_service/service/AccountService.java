@@ -43,7 +43,6 @@ public class AccountService {
 
     private final SecurityState securityState;
 
-    @Autowired
     public AccountService(
         AccountRepository accountRepository,
         PasswordEncoder passwordEncoder,
