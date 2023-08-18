@@ -55,7 +55,7 @@ public class Order implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "orderStatus", nullable = false)
     private OrderStatus orderStatus;
 
     @NotNull

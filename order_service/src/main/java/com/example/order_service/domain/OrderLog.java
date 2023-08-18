@@ -35,7 +35,7 @@ public class OrderLog {
     
     @NotNull    
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "order_status", nullable = false)
     private OrderStatus status;
 
     @ManyToOne(optional = false)
