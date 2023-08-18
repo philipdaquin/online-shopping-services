@@ -1,81 +1,105 @@
 package com.example.auth_service.controller;
 
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 
-import static org.mockito.BDDMockito.given;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
-import com.example.auth_service.config.SecurityConfig;
-import com.example.auth_service.controllers.AccountController;
-import com.example.auth_service.errors.NotFoundException;
+import com.example.auth_service.domain.actors.Account;
+import com.example.auth_service.repository.AccountRepository;
 import com.example.auth_service.service.AccountService;
+import com.example.auth_service.service.AccountServiceTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.CoreMatchers.is;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 
-@RunWith(SpringRunner.class)
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(value = AccountController.class)
-@ContextConfiguration(classes = {SecurityConfig.class, AccountController.class})
-@WithMockUser
-@SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
+import static io.restassured.RestAssured.given;
+
+import java.util.List;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
+
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Testcontainers
 public class AccountControllerTest {
     
-    @Autowired
-    MockMvc mockMvc;
+    // private static String image = "postgres:latest";
 
-    @MockBean
-    AccountService accountService;
+    static DockerImageName image = DockerImageName
+        .parse("postgresql:9.6.8")
+        .asCompatibleSubstituteFor("postgres");
+
+    @LocalServerPort
+    private Integer port;
+
+    @Container
+    @ServiceConnection
+    static PostgreSQLContainer<?> psql = new PostgreSQLContainer<>(image);
+    
+    @Autowired
+    AccountRepository accountRepository;
 
     @Autowired
     ObjectMapper mapper;
 
-    private WebApplicationContext webApplicationContext;
+    @Autowired
+    TestRestTemplate restTemplate;
 
-
-    private static final String ACCOUNT_URL = "/api/account";
-
-     @BeforeAll
+    @BeforeEach
     void setUp() throws Exception { 
-
-
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        accountRepository.deleteAll();
+        RestAssured.baseURI = "http://localhost:" + port;
     }
 
     @Test
-    public void Test_GetItemDoesNotExists_Return404NotFound() throws Exception { 
-        // given(accountService.getOne(1L)).willThrow(NotFoundException.class);
+    public void ControllerTest_GetAllWithoutPaging_ReturnsListOfAccounts() { 
+        var factory = new AccountServiceTest();
+        Account mockOne = factory.createMockOne();
+        Account mockTwo = factory.createMockTwo();
+
+        List<Account> accounts = List.of(mockOne, mockTwo);
+        accountRepository.saveAll(accounts);
         
-        RequestBuilder request = MockMvcRequestBuilders.get("/api/welcome");
-        
-        mockMvc.perform(request)
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().string(equalTo("Hello there!")));
+        given()
+            .contentType(ContentType.JSON)
+            .when()
+            .get("/api/accounts")
+            .then()
+            .statusCode(200)
+            .body(".", hasSize(2));
+        // Account[] account = restTemplate.getForObject("/api/accounts", Account[].class);
+        // assertEquals(account.length, 0);
+
     }
 
+    @Test
+    public void ControllerTest_GetOne_ReturnAccount() { 
+        var factory = new AccountServiceTest();
+        Account saved = accountRepository.save(factory.createMockOne());
+
+        given()
+            .contentType(ContentType.JSON)
+            .when()
+            .get("/api/account/{id}", saved.getId())
+            .then()
+            .statusCode(200)
+            .body("firstName", is(saved.getFirstName()))
+            .body("email", is(saved.getEmail()));
+    }
+
+
+    
 }

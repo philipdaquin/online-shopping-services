@@ -17,15 +17,16 @@
 		<java.version>17</java.version>
 		<jwt.version>0.9.1</jwt.version>
 		<springfox.version>3.0.0</springfox.version>
+    	<testcontainers.version>1.18.1</testcontainers.version>
 
 	</properties>
 	<dependencies>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -94,19 +95,38 @@
 
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-testcontainers</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>1.16.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>1.18.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
 			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers-bom</artifactId>
+			<version>${testcontainers.version}</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+		</dependencies>
+  	</dependencyManagement>
 
 	<build>
 		<plugins>

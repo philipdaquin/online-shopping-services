@@ -52,15 +52,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@RunWith(SpringRunner.class)
-@ExtendWith({SpringExtension.class})
-@SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DirtiesContext
-@WithMockUser
-// @WebMvcTest(AccountController.class)
+// @RunWith(SpringRunner.class)
+// @ExtendWith({SpringExtension.class})
+// @SpringBootTest
+// @AutoConfigureMockMvc(addFilters = false)
+// @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+// @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+// @DirtiesContext
+// @WithMockUser
+@WebMvcTest(AccountController.class)
 public class AccountControllerIntegrationTest {
     
     @Autowired

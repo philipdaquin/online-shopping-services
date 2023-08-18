@@ -1,5 +1,6 @@
 package com.example.auth_service.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -155,7 +156,7 @@ public class AccountService {
     }
 
     /**
-     * 
+     * Get all with Pagination
      * 
      * @param pageable
      * @return
@@ -164,6 +165,15 @@ public class AccountService {
     public Page<Account> getAll(Pageable pageable) {
         return accountRepository.findAll(pageable);
     }
+
+    /**
+     * Gets all without any pagination 
+     * @return
+     */
+    public List<Account> getAllWithoutPage() { 
+        return accountRepository.findAll();
+    }
+
     
     /**
      * Change Password 
