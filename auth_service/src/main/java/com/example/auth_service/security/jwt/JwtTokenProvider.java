@@ -26,7 +26,7 @@ public class JwtTokenProvider {
 
     public final String AUTHENTICATION_HEADER = null;
 
-    @Value(("${jwt.expiration.time}"))
+    @Value("${jwt.expiration.time}")
     private long tokenValidityInMilliseconds;   
  
     /*

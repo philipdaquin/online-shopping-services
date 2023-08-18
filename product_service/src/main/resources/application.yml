@@ -4,12 +4,7 @@ server:
     include-message: always
     include-binding-errors: always
   port: 8082
-    
 spring:
-  
-  # application:
-  #   name: PRODUCT_SERVICE
-  
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
@@ -19,21 +14,18 @@ spring:
     username: postgres
     password: password
     url: jdbc:postgresql://localhost:5432/productdb
-  
   jpa:
     generate-ddl: true
     show-sql: true
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     database: postgresql
-    # when you launch the first time -- switch this from `update` to `create`
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-
 jwt:
   secret: aSecretKey
   expiration.time: 9000000

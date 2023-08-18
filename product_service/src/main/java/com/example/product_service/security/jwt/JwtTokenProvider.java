@@ -27,7 +27,7 @@ public class JwtTokenProvider {
 
     public static final String AUTHORITIES_KEY = "Auth";
 
-    @Value(("${jwt.expiration.time}"))
+    @Value("${jwt.expiration.time}")
     private long tokenValidityInMilliseconds;
 
 
