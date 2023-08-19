@@ -6,20 +6,27 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.example.shopping_cart.domain.enums.OrderStatus;
 import com.example.shopping_cart.domain.orders.Order;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 
+@Entity
+@Table(name = "shopping_cart")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ShoppingCart implements Serializable {
 
     private static final Long serialVersionID = 1L;
@@ -43,9 +50,6 @@ public class ShoppingCart implements Serializable {
     @Column(name = "total_price")
     public BigDecimal totalPrice;
 
-    @OneToMany
-    @NotNull
-    @Column(name = "product_id", nullable = false)
     public Set<Order> orders = new HashSet<Order>();
 
 

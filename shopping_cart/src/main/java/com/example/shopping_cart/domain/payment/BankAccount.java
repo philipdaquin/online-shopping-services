@@ -28,7 +28,6 @@ public class BankAccount extends Payment implements Serializable {
     @NotNull
     private String accountNumber;
 
-    @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = {"bankAccounts"}, allowSetters = true)
     private Account account;

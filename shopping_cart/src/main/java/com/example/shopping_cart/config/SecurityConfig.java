@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
-    
+        
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean

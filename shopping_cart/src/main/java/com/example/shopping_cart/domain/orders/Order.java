@@ -9,6 +9,7 @@ import java.util.List;
 import com.example.shopping_cart.domain.enums.OrderStatus;
 import com.example.shopping_cart.domain.product.Product;
 
+import jakarta.persistence.Entity;
 public class Order implements Serializable {
 
     private static final Long serialVersionID = 1L;
