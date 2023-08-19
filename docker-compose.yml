@@ -1,0 +1,16 @@
+services:
+  
+  apigateway:
+    
+
+  authservice:
+
+  configserver:
+
+  discoveryservice:
+
+  orderservice:
+
+  productservice:
+
+  shoppingcart:
