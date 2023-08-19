@@ -1,0 +1,29 @@
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+  port: 8084
+    
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+  datasource:
+    password: password
+    url: jdbc:postgresql://localhost:5432/shopping_cart_db
+    username: postgres
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+    open-in-view: false
+jwt:
+  secret: aSecretKey
+  expiration:
+    time: 9000000
