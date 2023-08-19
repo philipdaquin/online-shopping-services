@@ -1,8 +1,10 @@
 
-
+logging:
+  level:
+    root: info
 
 server:
-    port: 8085
+    port: 9296
 spring: 
     main: 
         web-application-type: reactive
@@ -12,10 +14,7 @@ spring:
         config:
             server:
                 git:
-                    uri: https://github.com/spring-cloud-samples/config-repo
-                    # username: philipdaquin
-                    # password: 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
-                    # uri: https://github.com/philipdaquin/java_microservices
-                    # clone-on-start: true
+                    uri: https://github.com/philipdaquin/java_microservices
+                    clone-on-start: true
 
 
