@@ -9,8 +9,9 @@ services:
       configserver:
         condition: service_healthy
     environment:
-      - CONFIG_SERVER_URL=value
       - DEFAULT_ZONE_URL=http://eureka:password@localhost:8761
+      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
+      - CONFIG_SERVER_ADDRESS=http://configserver:9296
     networks:
       - network
 
@@ -49,9 +50,6 @@ services:
     container_name: discovery_service
     ports:
       - '8761:8761'
-    environment:
-      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
-      - CONFIG_SERVER_ADDRESS=http://configserver:9296
     healthcheck:
       test: curl --fail http://localhost:8761/eureka/v2/apps || exit 1
       interval: 4s
