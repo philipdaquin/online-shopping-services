@@ -6,15 +6,15 @@ logging:
 server:
     port: 9296
 spring: 
-    main: 
-        web-application-type: reactive
     application:
         name: config_server
     cloud:
         config:
             server:
                 git:
-                    uri: https://github.com/philipdaquin/java_microservices
+                    username: philipdaquin
+                    password: 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
+                    uri: https://github.com/philipdaquin/config-repo
                     clone-on-start: true
 
 

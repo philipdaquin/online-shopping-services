@@ -1,16 +1,134 @@
 services:
   
   apigateway:
-    
+    image: 'philipasd/apigateway-v1:latest'
+    container_name: apigateway
+    ports:
+      - '9090:9090'
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      - CONFIG_SERVER_URL=value
+      - DEFAULT_ZONE_URL=http://eureka:password@localhost:8761
+    networks:
+      - network
 
   authservice:
-
+    image: 'philipasd/auth-service-v1:latest'
+    container_name: auth_service
+    ports:
+      - '8081:8081'
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+    networks:
+      - network
+    
   configserver:
-
+    image: 'philipasd/config-server-v1:latest'
+    container_name: config_server
+    ports:
+      - '9296:9296'
+    environment:
+      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://configserver:9296/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      - discoveryservice
+    networks:
+      - network
+  
   discoveryservice:
+    image: 'philipasd/discovery-service-v1:latest'
+    container_name: discovery_service
+    ports:
+      - '8761:8761'
+    environment:
+      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
+      - CONFIG_SERVER_ADDRESS=http://configserver:9296
+    healthcheck:
+      test: curl --fail http://localhost:8761/eureka/v2/apps || exit 1
+      interval: 4s
+      timeout: 2s
+      retries: 3
+    networks:
+      - network
 
   orderservice:
+    image: 'philipasd/order-service-v1:latest'
+    container_name: order_service
+    ports:
+      - '8083:8083'
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+    networks:
+      - network
 
   productservice:
+    image: 'philipasd/product-service-v1:latest'
+    container_name: product_service
+    ports:
+      - '8082:8082'
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
 
   shoppingcart:
+    image: 'philipasd/shopping-cart-v1:latest'
+    container_name: shopping_cart
+    ports:
+      - '8084:8084'
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+    networks:
+      - network
+    
+
+  # 
+  # Persistence 
+  #
+  #
+  #
+  database:
+    container_name: postgres
+    image: 'postgres:13'
+    restart: always
+    command: -p 5432 # Note: This line might not be necessary
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=db
+    ports:
+      - "5432:5432"
+    networks:
+      - network
+    volumes:
+      - ./database:/data/postgres
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "db", "-U", "postgres", "-h", "database"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+
+volumes:
+  database:
+    driver: local
+
+networks:
+  network: 
+    driver: bridge
