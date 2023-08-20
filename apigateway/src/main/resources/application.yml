@@ -1,0 +1,104 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: api-gateway
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:9296}
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      default-filters:
+
+        # 
+        #   Rate Limiter
+        #   https://resilience4j.readme.io/docs/ratelimiter
+        #
+      - name: RequestRateLimiter
+        args:
+          redis-rate-limiter.replenishRate: 1
+          redis-rate-limiter.burstCapacity: 1
+          redis-rate-limiter.requestedTokens: 1
+
+        #   Retry 
+        #   https://resilience4j.readme.io/docs/retry
+        #
+      - name: Retry 
+        args:
+          retries: 3
+          methods:  GET
+          series: SERVER_ERROR
+          statuses: BAD_REQUEST, INTERNAL_SERVER_ERROR
+          exceptions: java.io.IOException, java.util.concurrent.TimeoutException, org.springframework.web.client.HttpServerErrorException
+          backoff:
+            firstBackoff: 10ms 
+            maxBackoff: 500ms
+            factor: 3
+            basedOnPreviousValue: false
+
+      #
+      #
+      #
+      routes:
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/product/**
+            - Path=/api/category/**
+          # Circuit breaker with fallback strategy 
+          filters:
+          - name: CircuitBreaker 
+            args:
+              name: product-service
+              fallbackUri: forward:/fallback/product-service
+              
+
+        - id: auth-service
+          uri: http://localhost:8761
+          predicates:
+            - Path=/auth/**
+          filters:
+          - name: CircuitBreaker 
+            args:
+              name: auth-service
+              fallbackUri: forward:/fallback/auth-service
+        
+
+        - id: order-service
+          uri: http://localhost:8761
+          predicates:
+            - Path=/api/product-order/**
+          filters:
+          - name: CircuitBreaker 
+            args:
+              name: order-service
+              fallbackUri: forward:/fallback/order-service
+
+
+
+        - id: shopping-cart
+          uri: http://localhost:8761
+          predicates:
+            - Path=/api/cart/**
+          filters:
+          - name: CircuitBreaker 
+            args:
+              name: shopping-cart
+              fallbackUri: forward:/fallback/shopping-cart
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${DEFAULT_ZONE_URL}/eureka
+    registerWithEureka: true
+app:
+  eureka-server: localhost
+logging:
+  level:
+    org.springframework: DEBUG
+jwt:
+  secret: mySecretKey
+  expireMs: 120000
+  refrEshexpireMs: 120000
