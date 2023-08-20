@@ -30,7 +30,7 @@ import jakarta.validation.Valid;
 
 @ApiModel(description = "Orders API")
 @RestController
-@RequestMapping(name = "/api")
+@RequestMapping(name = "/api/product-order")
 public class OrderController {
     
     private final OrderService orderService;
@@ -50,7 +50,7 @@ public class OrderController {
      * @return
      * @throws URISyntaxException
      */
-    @PostMapping("/product-order")
+    @PostMapping("/")
     public ResponseEntity<Order> createOrder(@Valid @RequestBody Order order) throws URISyntaxException {
         
         // Check if the product-to-order exists 
@@ -68,7 +68,7 @@ public class OrderController {
      * @param id
      * @return
      */
-    @DeleteMapping("/product-order/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable final Long id) {
         
         if (!orderRepository.existsById(id)) throw new BadRequestException("Order Not found");
@@ -86,7 +86,7 @@ public class OrderController {
      * @param id
      * @return
      */
-    @GetMapping("/product-order/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Order> getOrder(@PathVariable Long id) {
         Optional<Order> productOrder = orderService.getOne(id);
 
@@ -101,13 +101,13 @@ public class OrderController {
      * 
      * @return
      */
-    @GetMapping("/product-order")
+    @GetMapping("/")
     ResponseEntity<List<Order>> getAll() {
         List<Order> orderPage = orderService.getAll();
         return ResponseEntity.ok().body(orderPage);
     }
 
-    @PatchMapping(value = "/product-order/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/{id}", consumes = "application/merge-patch+json")
     ResponseEntity<Order> partialUpdate(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody Order newUpdate

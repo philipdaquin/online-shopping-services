@@ -27,7 +27,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/auth/")
 public class AccountController {
     
     private final Logger log = LoggerFactory.getLogger(AccountController.class);
@@ -85,7 +85,7 @@ public class AccountController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/auth")
+    @GetMapping("/authenticate")
     public String isAuthenticated(HttpServletRequest request) { 
         return request.getRemoteUser();
     }

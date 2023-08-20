@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/cart")
 public class ShoppingCartController {
     
     private final Logger log = LoggerFactory.getLogger(ShoppingCartController.class);
@@ -42,7 +42,7 @@ public class ShoppingCartController {
         this.shoppingCartService = shoppingCartService;
     }
 
-    @PostMapping(name = "/cart")
+    @PostMapping("/")
     ResponseEntity<Void> createShoppingCart(@Valid @RequestBody ShoppingCart shoppingCart) throws URISyntaxException {
         ShoppingCart response = shoppingCartService.save(shoppingCart);
         return ResponseEntity
@@ -50,7 +50,7 @@ public class ShoppingCartController {
             .build();
     }
 
-    @DeleteMapping(name = "/cart/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteShoppingCart(@PathVariable final Long id) {
         if (!shoppingCartRepository.existsById(id)) throw new NotFoundException();
         shoppingCartService.deleteOne(id);
@@ -58,7 +58,7 @@ public class ShoppingCartController {
         return ResponseEntity.notFound().build();
     }
     
-    @GetMapping(name = "/cart/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<ShoppingCart> getShoppingCart(@PathVariable final Long id) {
         if (!shoppingCartRepository.existsById(id)) throw new NotFoundException();
         ShoppingCart response = shoppingCartService.getOne(id).orElseThrow(() -> new NotFoundException());
@@ -66,7 +66,7 @@ public class ShoppingCartController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PatchMapping(name = "/cart/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(name = "/{id}", consumes = "application/merge-patch+json")
     ResponseEntity<ShoppingCart> partialUpdateShoppingCart(
         @PathVariable final Long id, 
         @Valid @RequestBody ShoppingCart newCart
@@ -82,7 +82,7 @@ public class ShoppingCartController {
         return ResponseEntity.ok().body(cart);
     }
 
-    @GetMapping(name = "/cart")
+    @GetMapping("/")
     ResponseEntity<List<ShoppingCart>> getAllShoppingCartsByUser() {
         
         List<ShoppingCart> allCarts = shoppingCartService.getAll();

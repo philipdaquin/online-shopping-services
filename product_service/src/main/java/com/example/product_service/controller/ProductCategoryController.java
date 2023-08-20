@@ -29,7 +29,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/category")
 public class ProductCategoryController {
     private final ProductCategoryService productCategoryService;
 
@@ -50,7 +50,7 @@ public class ProductCategoryController {
      * @return
      * @throws URISyntaxException
      */
-    @PostMapping("/category")
+    @PostMapping("/")
     public ResponseEntity<ProductCategory> createProductCategory(@Valid @RequestBody ProductCategory newCategory) throws URISyntaxException {
         ProductCategory saved = productCategoryService.save(newCategory);
 
@@ -64,7 +64,7 @@ public class ProductCategoryController {
      * @param id
      * @return
      */
-    @GetMapping("/category/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ProductCategory> getProductCategory(@PathVariable Long id) {
         Optional<ProductCategory> category = productCategoryService.getOne(id);
 
@@ -81,7 +81,7 @@ public class ProductCategoryController {
      * @param size
      * @return
      */
-    @GetMapping("/category")
+    @GetMapping("/")
     public ResponseEntity<Page<ProductCategory>> getAllProductCategories(
         @RequestParam(defaultValue = "0") int page, 
         @RequestParam(defaultValue = "10") int size
@@ -97,7 +97,7 @@ public class ProductCategoryController {
      * @param id
      * @return
      */
-    @DeleteMapping("/category/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProductCategory(@PathVariable Long id) {
         productCategoryService.deleteOne(id);
 
@@ -111,7 +111,7 @@ public class ProductCategoryController {
      * @param newProductCategory
      * @return
      */
-    @PatchMapping(value = "/category/{id}")
+    @PatchMapping(value = "/{id}")
     public ResponseEntity<ProductCategory> partialUpdateProductCategory(
         @PathVariable final Long id,
         @NotNull @RequestBody ProductCategory newProductCategory
@@ -143,7 +143,7 @@ public class ProductCategoryController {
      * @param newProductCategory
      * @return
      */
-    @PutMapping(value = "/category/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<ProductCategory> updateProductCategory(
         @PathVariable final Long id, 
         @NotNull @RequestBody ProductCategory newProductCategory

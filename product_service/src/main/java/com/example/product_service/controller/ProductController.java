@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/product")
 public class ProductController {
 
     private final ProductService productService;
@@ -45,7 +45,7 @@ public class ProductController {
      * @param size
      * @return
      */
-    @GetMapping("/product")
+    @GetMapping("/")
     public ResponseEntity<Page<Product>> getAllItems(
         @RequestParam(defaultValue = "0") int page, 
         @RequestParam(defaultValue = "10") int size
@@ -61,7 +61,7 @@ public class ProductController {
      * @return
      * @throws URISyntaxException
      */
-    @PostMapping("/product")
+    @PostMapping("/")
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product newPRoduct) throws URISyntaxException { 
         Product saved = productService.save(newPRoduct);
 
@@ -75,7 +75,7 @@ public class ProductController {
      * @param id
      * @return
      */
-    @GetMapping("/product/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable Long id) { 
         Product product = productService
             .getOne(id)
@@ -88,7 +88,7 @@ public class ProductController {
      * @param id
      * @return
      */
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable final Long id) { 
         productService.deleteOne(id);
 
@@ -102,7 +102,7 @@ public class ProductController {
      * @param newProduct
      * @return
      */
-    @PatchMapping(value = "/product/{id}")
+    @PatchMapping(value = "/{id}")
     public ResponseEntity<Product> partialUpdateProduct(
         @PathVariable final Long id,
         @NotNull @RequestBody Product newProduct 
@@ -131,7 +131,7 @@ public class ProductController {
      * @param newProduct
      * @return
      */
-    @PutMapping(value = "/product/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<Product> UpdateProduct(
         @PathVariable final Long id,
         @NotNull @RequestBody Product newProduct 
