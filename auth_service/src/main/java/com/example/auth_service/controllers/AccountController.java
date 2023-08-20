@@ -27,7 +27,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/auth/")
+@RequestMapping("/auth")
 public class AccountController {
     
     private final Logger log = LoggerFactory.getLogger(AccountController.class);
