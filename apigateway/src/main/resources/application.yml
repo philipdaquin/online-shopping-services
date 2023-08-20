@@ -2,6 +2,11 @@ server:
   port: 9090
 
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379 
+
   application:
     name: api-gateway
   config:
@@ -56,7 +61,7 @@ spring:
               
 
         - id: auth-service
-          uri: http://localhost:8761
+          uri: lb://auth-service
           predicates:
             - Path=/auth/**
           filters:
@@ -67,7 +72,7 @@ spring:
         
 
         - id: order-service
-          uri: http://localhost:8761
+          uri: lb://order-service
           predicates:
             - Path=/api/product-order/**
           filters:
@@ -79,7 +84,7 @@ spring:
 
 
         - id: shopping-cart
-          uri: http://localhost:8761
+          uri: lb://shopping-cart
           predicates:
             - Path=/api/cart/**
           filters:
@@ -87,7 +92,11 @@ spring:
             args:
               name: shopping-cart
               fallbackUri: forward:/fallback/shopping-cart
-
+  session:
+    store-type: redis
+    timeout: 10m
+    redis:
+      namespace: library:edge
 eureka:
   client:
     serviceUrl:
