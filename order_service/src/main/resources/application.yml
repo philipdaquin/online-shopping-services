@@ -9,7 +9,8 @@ spring:
   
   # application:
   #   name: PRODUCT_SERVICE
-  
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:9296}
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher

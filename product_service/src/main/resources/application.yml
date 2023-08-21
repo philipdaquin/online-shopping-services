@@ -5,6 +5,8 @@ server:
     include-binding-errors: always
   port: 8082
 spring:
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:9296}
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher

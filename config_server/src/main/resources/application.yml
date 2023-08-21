@@ -1,20 +1,29 @@
 
 logging:
   level:
-    root: info
+    root: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    env:
+      post:
+        enabled: true
 
 server:
     port: 9296
 spring: 
     application:
-        name: config_server
+        name: config-server
     cloud:
         config:
             server:
                 git:
-                    username: philipdaquin
-                    password: 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
+                    # username: philipdaquin
+                    # password: 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
                     uri: https://github.com/philipdaquin/config-repo
-                    clone-on-start: true
+                    # clone-on-start: true
 
 

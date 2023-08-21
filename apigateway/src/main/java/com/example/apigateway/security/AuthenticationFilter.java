@@ -13,7 +13,7 @@ import org.springframework.web.server.ServerWebExchange;
 import jakarta.servlet.http.HttpServletRequest;
 import reactor.core.publisher.Mono;
 
-@RefreshScope
+// @RefreshScope
 @Component
 public class AuthenticationFilter implements GatewayFilter {
 

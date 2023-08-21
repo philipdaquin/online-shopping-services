@@ -1,103 +1,113 @@
 services:
-  
-  apigateway:
-    image: 'philipasd/apigateway-v1:latest'
-    container_name: apigateway
+  discovery-service:
+    image: 'philipasd/discovery-service-v1:latest'
+    container_name: discovery-service
     ports:
-      - '9090:9090'
-    depends_on:
-      configserver:
-        condition: service_healthy
-    environment:
-      - DEFAULT_ZONE_URL=http://eureka:password@localhost:8761
-      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
-      - CONFIG_SERVER_ADDRESS=http://configserver:9296
+      - '8761:8761'
+    # healthcheck:
+    #   test: curl --fail http://localhost:8761/eureka/v2/apps || exit 1
+    #   interval: 4s
+    #   timeout: 2s
+    #   retries: 3
     networks:
       - network
-
-  authservice:
-    image: 'philipasd/auth-service-v1:latest'
-    container_name: auth_service
-    ports:
-      - '8081:8081'
-    depends_on:
-      database:
-        condition: service_healthy
-      configserver:
-        condition: service_started
-    networks:
-      - network
-    
-  configserver:
+  config-server:
     image: 'philipasd/config-server-v1:latest'
-    container_name: config_server
+    container_name: config-server
     ports:
       - '9296:9296'
     environment:
       - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://configserver:9296/actuator/health" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:9296/actuator/health/readiness " ]
       interval: 10s
       timeout: 5s
       retries: 5
     depends_on:
-      - discoveryservice
-    networks:
-      - network
-  
-  discoveryservice:
-    image: 'philipasd/discovery-service-v1:latest'
-    container_name: discovery_service
-    ports:
-      - '8761:8761'
-    healthcheck:
-      test: curl --fail http://localhost:8761/eureka/v2/apps || exit 1
-      interval: 4s
-      timeout: 2s
-      retries: 3
+      discovery-service:
+        condition: service_started
     networks:
       - network
 
-  orderservice:
+
+  api-gateway:
+    image: 'philipasd/apigateway-v1:latest'
+    container_name: api-gateway
+    ports:
+      - '9090:9090'
+    depends_on:
+      config-server:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      - DEFAULT_ZONE_URL=http://eureka:password@localhost:8761
+      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
+      - CONFIG_SERVER_ADDRESS=http://configserver:9296
+      - REDIS_URL=redis://redis:6379
+    networks:
+      - network
+
+  auth-service:
+    image: 'philipasd/auth-service-v1:latest'
+    container_name: auth-service
+    ports:
+      - '8081:8081'
+    depends_on:
+      database:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - network
+    environment:
+      - CONFIG_SERVER_URL=http://configserver:9296
+  
+  
+  order-service:
     image: 'philipasd/order-service-v1:latest'
-    container_name: order_service
+    container_name: order-service
     ports:
       - '8083:8083'
     depends_on:
       database:
         condition: service_healthy
-      configserver:
+      config-server:
         condition: service_started
     networks:
       - network
+    environment:
+      - CONFIG_SERVER_URL=http://configserver:9296
 
-  productservice:
+  product-service:
     image: 'philipasd/product-service-v1:latest'
-    container_name: product_service
+    container_name: product-service
     ports:
       - '8082:8082'
     depends_on:
       database:
         condition: service_healthy
-      configserver:
+      config-server:
         condition: service_started
+    environment:
+      - CONFIG_SERVER_URL=http://configserver:9296
 
-  shoppingcart:
+  shopping-cart:
     image: 'philipasd/shopping-cart-v1:latest'
-    container_name: shopping_cart
+    container_name: shopping-cart
     ports:
       - '8084:8084'
     depends_on:
       database:
         condition: service_healthy
-      configserver:
+      config-server:
         condition: service_started
     networks:
       - network
-    
-
+    environment:
+      - CONFIG_SERVER_URL=http://configserver:9296
   # 
-  # Persistence 
+  #    Database and Persistence  
   #
   #
   #
@@ -121,6 +131,75 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      - network
+#################################################################################
+  #    
+  #   
+  #    Logging and Monitoring   
+  #
+  #
+  #
+  prometheus:
+    image: prom/prometheus:v2.25.0
+    container_name: prometheus
+    ports:
+      - 9091:9091
+    volumes:
+      - ./platform/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  #
+  #
+  # Grafana
+  # - Visualise logs, metrics, and traces from Springboot, Gateway and Circuit breakers 
+  #
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - 3000:3000
+    volumes:
+      - ./platform/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./platform/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./platform/grafana/grafana.ini:/etc/grafana/grafana.ini
+    depends_on:
+      - loki
+      - prometheus
+      - tempo
+  #
+  # Loki - Log aggregator system part of the Grafana observability stack 
+  #
+  #
+  loki:
+    image: grafana/loki:2.7.3
+    container_name: loki
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - 3100:3100
+
+  #
+  #
+  # Tempo - Distributed tracing backend part of the Grafana observability
+  #
+  #
+  tempo:
+    image: grafana/tempo:2.0.0
+    container_name: tempo
+    command: -config.file /etc/tempo-config.yml
+    ports:
+      - "3110:3100"     # Tempo
+      - "4317:4317"     # OTLP
+      - "9411:9411"     # Zipkin
+    volumes:
+      - ./platform/tempo/tempo.yml:/etc/tempo-config.yml
+#################################################################################
 
 
 volumes:
