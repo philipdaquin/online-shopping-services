@@ -1,0 +1,50 @@
+pipeline { 
+    agent any 
+    stages{
+        stage("Build Project") { 
+            steps { 
+                checkout([$class: 'GitSCM', 
+                branches: [[name: '*/main']], 
+                extensions: [], 
+                userRemoteConfigs: [[url: 'https://github.com/philipdaquin/java_microservices']]])
+
+                sh "mvn clean install"
+            }
+        }
+
+        stage("build docker image") {
+            steps { 
+                script { 
+                    sh 'docker build -t apigateway:v1 .'
+                }
+            }
+            steps { 
+                script { 
+                    sh 'docker tag apigateway:v1 philipasd/apigateway:v1'
+                }
+            }
+        }
+        stage("Push image to hub") {
+            script { 
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER1', passwordVariable: 'PASS1')]) {
+                    sh 'docker login -philipasd -p ${dockerhub-pwd}'
+
+                    sh 'docker push philipasd/apigateway:v1'
+                }
+            }
+        }
+        stage("Deploy to kubernetes") {
+            steps { 
+                script {
+                    sh 'minikube start'
+                    echo 'kubernetes started successfully'
+                }
+            }
+            steps { 
+                script { 
+                    kubernetesDeploy (configs: 'api-gateway-deployment.yaml', kubeconfigId: 'k8sconfigpwd')
+                }
+            }
+        }
+    }
+}

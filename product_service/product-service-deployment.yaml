@@ -1,0 +1,46 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service-dep
+spec:
+  selector:
+    matchLabels:
+      app: product-service-dep
+  template:
+    metadata:
+      labels:
+        app: product-service-dep
+    spec:
+      containers:
+      - name: product-service-dep
+        image: philipasd/product-service-v1
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: CONFIG_SERVER_ADDRESS
+            valueFrom:
+              configMapKeyRef:
+                name: config-cm
+                key: config_url 
+                
+          - name: database
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-cm
+                key: hostname 
+        ports:
+        - containerPort: 8082
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+spec:
+  selector:
+    app: product-service-dep
+  ports:
+  - port: 80
+    targetPort: 8082
