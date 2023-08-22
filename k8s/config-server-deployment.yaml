@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  config-server-dep
+  namespace: default
+  labels:
+    app:  config-server-dep
+spec:
+  selector:
+    matchLabels:
+      app: config-server-dep
+  replicas: 1
+  # strategy:
+  #   rollingUpdate:
+  #     maxSurge: 25%
+  #     maxUnavailable: 25%
+  #   type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  config-server-dep
+    spec:
+      # initContainers:
+        # Init containers are exactly like regular containers, except:
+          # - Init containers always run to completion.
+          # - Each init container must complete successfully before the next one starts.
+      containers:
+      - name:  config-server-dep
+        image: philipasd/config-server-v1
+        imagePullPolicy: IfNotPresent
+        
+        # resources:
+        #   requests:
+        #     cpu: 100m
+        #     memory: 100Mi
+        #   limits:
+        #     cpu: 100m
+        #     memory: 100Mi
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: 80
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 5
+        #   successThreshold: 1
+        #   failureThreshold: 3
+        #   periodSeconds: 10
+        # readinessProbe:
+        #   httpGet:
+        #     path: /_status/healthz
+        #     port: 80
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 2
+        #   successThreshold: 1
+        #   failureThreshold: 3
+        #   periodSeconds: 10
+
+        env:
+        - name: EUREKA_SERVER_ADDRESS
+          valueFrom:
+            configMapKeyRef:
+              name: eureka-cm
+              key: eureka_url
+        ports:
+        - containerPort:  9296
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-server
+spec:
+  selector:
+    app: config-server-dep
+  ports:
+  - port: 80
+    targetPort: 9296
