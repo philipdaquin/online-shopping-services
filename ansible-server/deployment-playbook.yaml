@@ -1,0 +1,6 @@
+- name: Deploy on Kubernetes
+  hosts: dockerservers
+  tasks:
+    - name: Deploying Kubernetes 
+      command: kubetcl apply -f k8s
+      

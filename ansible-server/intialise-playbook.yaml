@@ -1,0 +1,7 @@
+
+- name: Configure Jenkins Playbook
+  hosts: jenkins
+  tasks:
+    - name: Install Java Requirements
+
+  
