@@ -10,5 +10,6 @@ COPY target/order_service.jar order_service.jar
 ENTRYPOINT [ "java", "-jar", "/order_service.jar" ]
 
 
+
 # Expose the port that the spring boot app will listen to 
 EXPOSE 8083
