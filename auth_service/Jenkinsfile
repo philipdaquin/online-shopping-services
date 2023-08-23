@@ -8,9 +8,16 @@ pipeline {
                 extensions: [], 
                 userRemoteConfigs: [[url: 'https://github.com/philipdaquin/java_microservices']]])
 
-                sh "mvn clean install"
+                sh "mvn clean package"
             }
         }
+        stage('Test') {
+            steps { 
+                sh "mvn test"
+            }
+        }
+
+
 
         stage("build docker image") {
             steps { 
