@@ -4,3 +4,5 @@
     - name: Deploying Kubernetes 
       command: kubetcl apply -f k8s
       
+
+      
