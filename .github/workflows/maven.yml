@@ -11,8 +11,8 @@ name: Java CI with Maven
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  workflow_dispatch: 
+
 
 jobs:
   build:
@@ -31,59 +31,62 @@ jobs:
         server-username: MAVEN_USERNAME
         server-password: MAVEN_PASSWORD
 
-    - name: Build and PUsh 
-      run: mvn -B package --file apigateway/pom.xml
-      # env:
-      #   MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      #   MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+
+    # - name:  Build and Test Cart Service
+    # run: mvn -B package --file shopping_cart/pom.xml
+    # env:
+      # MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
+      # MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      
+
+
+    - name: Build and Test API Gateway
+      run: mvn package --file apigateway/pom.xml
+      env:
+        MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+    
+    
+    - name: Build and Test Authentication Service
+      run: mvn package --file auth_service/pom.xml
+      env:
+        MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     
 
+    - name:  Build and Test Config Service
+      run: mvn package --file config_service/pom.xml
+      env:
+        MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     
-    - name: Build and PUsh 
-      run: mvn -B package --file auth_service/pom.xml
-      # env:
-      #   MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      #   MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     
+    - name:  Build and Test Discovery Service
+      run: mvn package --file discovery_service/pom.xml
+      env:
+        MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
     
-    - name: Build and PUsh 
-      run: mvn -B package --file config_service/pom.xml
-      # env:
-      #   MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      #   MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-    
+    - name:  Build and Test Order Service
+      run: mvn package --file order_service/pom.xml
+      env:
+        MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
     
-    - name: Build and PUsh 
-      run: mvn -B package --file discovery_service/pom.xml
-      # env:
-      #   MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      #   MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+    - name:  Build and Test Product Service
+      run: mvn package --file product_service/pom.xml
+      env:
+        MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     
-
     
-    - name: Build and PUsh 
-      run: mvn -B package --file order_service/pom.xml
-      # env:
-      #   MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      #   MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-    
-
-    
-    - name: Build and PUsh 
-      run: mvn -B package --file product_service/pom.xml
-      # env:
-      #   MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      #   MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-    
-
-    
-    - name: Build and PUsh 
-      run: mvn -B package --file shopping_cart/pom.xml
-      # env:
-      #   MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
-      #   MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+    - name:  Build and Test Cart Service
+      run: mvn package --file shopping_cart/pom.xml
+      env:
+        MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     
 
     
