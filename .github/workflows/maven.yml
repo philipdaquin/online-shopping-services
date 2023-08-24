@@ -48,42 +48,42 @@ jobs:
     
     
     - name: Build and Test Authentication Service
-      run: mvn package --file auth_service/pom.xml
+      run: mvn package -B -DskipTests --file auth_service/pom.xml 
       env:
         MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
         MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     
 
     - name:  Build and Test Config Service
-      run: mvn package --file config_service/pom.xml
+      run: mvn package -B -DskipTests --file config_service/pom.xml
       env:
         MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
         MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     
     
     - name:  Build and Test Discovery Service
-      run: mvn package --file discovery_service/pom.xml
+      run: mvn package -B -DskipTests --file discovery_service/pom.xml
       env:
         MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
         MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
     
     - name:  Build and Test Order Service
-      run: mvn package --file order_service/pom.xml
+      run: mvn package -B -DskipTests --file order_service/pom.xml
       env:
         MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
         MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
     
     - name:  Build and Test Product Service
-      run: mvn package --file product_service/pom.xml
+      run: mvn package -B -DskipTests --file product_service/pom.xml
       env:
         MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
         MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     
     
     - name:  Build and Test Cart Service
-      run: mvn package --file shopping_cart/pom.xml
+      run: mvn package -B -DskipTests --file shopping_cart/pom.xml
       env:
         MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
         MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
