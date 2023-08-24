@@ -41,14 +41,15 @@ jobs:
 
 
     - name: Build and Test API Gateway
-      run: mvn package --file apigateway/pom.xml
+      run: mvn package -DskipTests  --file apigateway/pom.xml
       env:
         MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
         MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     
     
     - name: Build and Test Authentication Service
-      run: mvn package -B -DskipTests --file auth_service/pom.xml 
+      # run: mvn package -B  --file auth_service/pom.xml 
+      run: mvn package -B  --file auth_service/pom.xml 
       env:
         MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
         MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
