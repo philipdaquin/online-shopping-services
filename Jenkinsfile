@@ -44,16 +44,7 @@ pipeline {
             }
 
         } 
-        stage("Test ") { 
-
-        }
-
-        stage("Build Docker Image") {
-
-        }
-        stage("Push image to hub") { 
-
-        }
+     
     }   
 
     
