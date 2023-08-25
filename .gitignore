@@ -4,5 +4,5 @@
 *.pem
 
 
-*.tfvars
 *.terraform
+secret.tfvars
