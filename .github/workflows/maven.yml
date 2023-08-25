@@ -41,8 +41,7 @@ jobs:
 
 
     - name: Build and Test API Gateway
-      run: mvn -B package -Dmaven.test.skip=true --file apigateway/pom.xml
-
+      run: mvn package -DskipTests package --file shopping_cart/pom.xml
       env:
         MAVEN_USERNAME: ${{secrets.DOCKER_USERNAME}}
         MAVEN_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
