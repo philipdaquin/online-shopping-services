@@ -1,7 +1,12 @@
+
+
+
 - name: Deploy on Kubernetes
   hosts: dockerservers
+  become: true
+  
   tasks:
-    - name: Deploying Kubernetes 
+    - name: Deploy Kubernetes
       command: kubetcl apply -f k8s
       
 
