@@ -1,11 +1,14 @@
-
-
-
 - name: Deploy on Kubernetes
   hosts: dockerservers
   become: true
   
   tasks:
+    - name: Install Kubectl
+      command: install kubectl
+
+    - name: Configure Kubetcl to work with your EKS Cluster
+      command: aws eks --region <region-name> update-kubeconfig --name <cluster-name>
+
     - name: Deploy Kubernetes
       command: kubetcl apply -f k8s
       
