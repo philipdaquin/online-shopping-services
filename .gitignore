@@ -6,3 +6,7 @@
 
 *.terraform
 secret.tfvars
+
+*.terraform.lock.hcl
+*/.terraform-cache
+*.terragrunt-module-manifest
