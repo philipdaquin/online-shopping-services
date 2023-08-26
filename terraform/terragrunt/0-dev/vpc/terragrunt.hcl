@@ -1,5 +1,5 @@
 terraform { 
-    source = "../../../enviroment_modular/modules/vpc/"
+    source = "../../enviroment_modular/modules/vpc/"
     // source = "../../../enviroment_modular/module_environment/dev/vpc/"
 }
 

@@ -10,3 +10,5 @@ secret.tfvars
 *.terraform.lock.hcl
 */.terraform-cache
 *.terragrunt-module-manifest
+*/.environment_normal
+*/.older
