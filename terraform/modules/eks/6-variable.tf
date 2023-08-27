@@ -8,6 +8,7 @@ variable "env" {
 variable "eks_name" {
     description = "Name of EKS Cluster"
     type = string
+    default = "new-eks-cluster"
 }
 
 variable "eks_version" {

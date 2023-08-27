@@ -33,13 +33,13 @@ generate "variable" {
             description = "Access value"
             sensitive = true
             type = string
-            # default = "XX"
+            default = "AKIAX4XPSAWAVSYZKGBL"
         }
         variable "SECRET_KEY" {
             description="Secret value"
             sensitive = true
             type= string
-            # default = "XX"
+            default = "AwmODfqGDsR9+RaCHZ/6L46GKwKvFHDF6qoirMMm"
         }
     EOF
 }

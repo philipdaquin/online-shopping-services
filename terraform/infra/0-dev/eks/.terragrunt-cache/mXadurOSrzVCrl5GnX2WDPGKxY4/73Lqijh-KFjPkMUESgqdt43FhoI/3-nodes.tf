@@ -1,4 +1,3 @@
-
 resource "aws_eks_node_group" "this" {
     for_each = var.node_groups
 
