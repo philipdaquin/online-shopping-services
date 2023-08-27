@@ -1,44 +1,100 @@
 pipeline { 
     agent any 
+
+    environment { 
+
+    }
+
     stages{
-        stage("Build Project") { 
-            steps { 
-                checkout([$class: 'GitSCM', 
-                branches: [[name: '*/main']], 
-                extensions: [], 
-                userRemoteConfigs: [[url: 'https://github.com/philipdaquin/java_microservices']]])
-
-                sh "mvn clean install"
-            }
-        }
-
-        stage("build docker image") {
-            steps { 
-                script { 
-                    sh 'docker build -t discovery_service:v1 .'
-                }
-            }
-            steps { 
-                script { 
-                    sh 'docker tag discovery_service:v1 philipasd/discovery_service:v1'
+        stage("Welcome") {
+            post{
+                always { 
+                    echo 'Entering Auth Service'
                 }
             }
         }
-        stage("Push image to hub") {
-            script { 
-                withCredentials([string(crendentialsId: 'dockerhub-pwd', variable: 'dockerhupwd')]) { 
-                    sh 'docker login -philipasd -p ${dockerhub-pwd}'
-
-                    sh 'docker push philipasd/discovery_service:v1'
+        stage('Checkout') {
+            steps { 
+                sh "mvn --version"
+                sh "docker version"
+                
+                echo "Build"
+                echo "PATH - $PATH"
+                echo "BUILD_NUMBER - $env.BUILD_NUMBER"
+                echo "BUILD_ID - $env.BUILD_ID"
+                echo "JOB_NAME - $env.JOB_NAME"
+                echo "BUILD_TAG - $env.BUILD_TAG"
+                echo "BUILD_URL - $env.BUILD_URL"
+            }
+        }
+        stage('Compile') {
+            steps { 
+                sh "mvn test"
+            }
+        }
+        stage('Integration Test') {
+            steps { 
+                sh "mvn failsafe:integration-test failsafe:verify"
+            }
+        }
+        stage('Package') {
+            steps {  
+                sh "mvn package -DskipTests"
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("discovery_service:${env.BUILD_TAG}")
+                } 
+            }
+        }
+        stage('Push Docker Image to Docker Hub') {
+            steps { 
+                script() { 
+                    docker.withDockerRegistry('https://registry.hub.docker.com', 'dockerhub') { 
+                        dockerImage.push()
+                        dockerImage.push('latest')
+                    }
                 }
             }
         }
-        stage("Deploy to kubernetes") {
-            steps { 
-                script { 
-                    kubernetesDeploy (configs: 'discovery-service-deployment.yaml', kubeconfigId: 'k8sconfigpwd')
+
+        /*
+            Update Deployment Container Image: 
+
+            ```
+                api-gateway-deployment.yaml {
+                    container: apigateway:${env.BUILD_TAG}
+                    ...
                 }
-            }
+            ```
+        */
+        // stage("Trigger Manifest Latest Deployment Yaml") { 
+        //     build job: 'updateManifest', 
+        //     parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+        // }
+        // stage("Deploy to kubernetes") {
+        //     steps { 
+        //         script {
+        //             sh 'minikube start'
+        //             echo 'kubernetes started successfully'
+        //         }
+        //     }
+        //     steps { 
+        //         script { 
+        //             kubernetesDeploy (configs: 'api-gateway-deployment.yaml', kubeconfigId: 'k8sconfigpwd')
+        //         }
+        //     }
+        // }
+    }
+    post { 
+        success {
+            echo 'Successful run!'
+            echo 'Exiting Auth Service'
+        }
+        failure { 
+            echo 'Failed build!'
         }
     }
 }
