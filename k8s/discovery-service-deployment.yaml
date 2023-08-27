@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
       - name: discovery-service
-        image: philipasd/discovery-service-v1
+        image: philipasd/discovery-service-v1:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8761

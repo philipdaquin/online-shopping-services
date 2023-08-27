@@ -26,7 +26,7 @@ spec:
           # - Each init container must complete successfully before the next one starts.
       containers:
       - name:  config-server-dep
-        image: philipasd/config-server-v1
+        image: philipasd/config-server-v1:latest
         imagePullPolicy: IfNotPresent
         
         # resources:

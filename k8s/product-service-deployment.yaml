@@ -13,10 +13,37 @@ spec:
       labels:
         app: product-service-dep
     spec:
+    
       containers:
       - name: product-service-dep
-        image: philipasd/product-service-v1
+        image: philipasd/product-service-v1:latest
         imagePullPolicy: IfNotPresent
+        ##
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        livenessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /_status/healthz
+            port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        ##
         env:
           - name: CONFIG_SERVER_ADDRESS
             valueFrom:
