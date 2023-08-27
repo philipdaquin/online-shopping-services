@@ -11,6 +11,8 @@
 
     - name: Deploy Kubernetes
       command: kubetcl apply -f k8s
+      become: yes
+      
       
 
       
