@@ -27,7 +27,7 @@ spec:
       containers:
       - name:  config-server-dep
         image: philipasd/config-server-v1:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         
         # resources:
         #   requests:

@@ -27,7 +27,7 @@ spec:
       containers:
       - name:  api-gateway-dep
         image:  philipasd/apigateway-v1:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           requests:
             cpu: 100m

@@ -27,7 +27,7 @@ spec:
       containers:
       - name:  auth-service-dep
         image:  philipasd/auth-service-v1:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           requests:
             cpu: 100m

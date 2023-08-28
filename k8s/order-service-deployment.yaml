@@ -27,7 +27,7 @@ spec:
       containers:
       - name:  order-service-dep
         image:  philipasd/order-service-v1:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ##
         resources:
           requests:
