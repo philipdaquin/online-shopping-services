@@ -27,3 +27,9 @@ Sample file
 - Kubernetes
 - Jenkins
 - Junit
+
+
+
+Terraform Dependencies 
+- https://github.com/philipdaquin/infra-modules
+- https://github.com/philipdaquin/infra-live
