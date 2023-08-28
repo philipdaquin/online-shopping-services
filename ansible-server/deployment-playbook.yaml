@@ -1,3 +1,26 @@
+
+# stage( 'Deploy image to AWS EKS' ) {
+#             steps {
+#                 withAWS( region:'us-west-2', credentials:'capstone' ) {
+#                     sh 'echo "STAGE 4: Deploying image to AWS EKS cluster ..."'
+#                     sh 'aws eks --region us-west-2 update-kubeconfig --name capstone'
+#                     sh 'kubectl config use-context arn:aws:eks:us-west-2:428819381342:cluster/capstone'            
+#                     sh 'kubectl set image deployment web-app web-app=nigercode/web-app:v1.0'
+#                     sh 'kubectl rollout status deployment web-app'
+#                     sh 'kubectl apply -f templates/deployment.yml'
+#                     sh 'kubectl apply -f templates/loadbalancer.yml'
+#                     sh 'kubectl apply -f templates/aws-auth-cm.yml'
+#                     sh 'kubectl get nodes --all-namespaces'
+#                     sh 'kubectl get deployment'
+#                     sh 'kubectl get pod -o wide'
+#                     sh 'kubectl get service/web-app'
+#                     sh 'echo "Congratulations! Deployment successful."'
+#                     sh 'kubectl describe deployment/web-app'
+#                 }
+#             }
+#        }        
+#     }
+# }
 - name: Deploy on Kubernetes
   hosts: dockerservers
   become: true
@@ -6,13 +29,16 @@
     - name: Install Kubectl
       command: install kubectl
 
-    - name: Configure Kubetcl to work with your EKS Cluster
-      command: aws eks --region <region-name> update-kubeconfig --name <cluster-name>
+    - name: Update your current EKS cluster 
+      command: aws eks --region ap-southeast-2 update-kubeconfig --name eks-cluster
+      become: yes
 
     - name: Deploy Kubernetes
       command: kubetcl apply -f k8s
       become: yes
       
+    - name: Show all
+      command: kubectl rollout status deployment java-microservice
       
 
       

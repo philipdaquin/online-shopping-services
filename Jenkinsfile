@@ -1,14 +1,3 @@
-def pipelineMapping = [
-    './auth_service' : authService,
-    './apigateway': apiGateway,
-    './config_server': configServer,
-    './discovery_service': discoveryService,
-    './order_service': orderService,
-    './product_service': productService,
-    './shopping_cart': shoppingCart,
-]
-
-
 pipeline {
     agent any
 
@@ -49,5 +38,16 @@ pipeline {
                 build '5-product-service-pipeline'
             }
         }
+
+        /*
+            Ansible to deploy new changes to current instance of EKS cluster
+        */
+        stage('Deploy to EKS Cluster') { 
+            steps { 
+                script { 
+                    sh 'ansible-playbook ./ansible-server/deployment-playbook.yaml'
+                }
+            }
+        } 
     }
 }
