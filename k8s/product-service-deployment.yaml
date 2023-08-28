@@ -16,7 +16,7 @@ spec:
     
       containers:
       - name: product-service-dep
-        image: philipasd/product-service-v1:latest
+        image: philipasd/product-service:latest
         imagePullPolicy: Always
         ##
         resources:

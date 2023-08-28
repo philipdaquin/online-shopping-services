@@ -16,31 +16,38 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the source code
-                checkout scm
+                git url: 'https://github.com/philipdaquin/java_microservices.git'
             }
         }
-
-        stage('Run Changed Pipelines') {
-            steps {
-                script {
-                    for (def entry in pipelineMapping) {
-                        def pipelinePath = entry.key
-                        def pipelineName = entry.value
-
-                        echo 'hello world!'
-
-                        // if (changesetContainsPath(pipelinePath)) {
-                        //     echo "Running ${pipelineName} pipeline..."
-                        //     build job: "${pipelineName}", wait: false
-                        // }
-                    }
-                }
+        stage('Build discovery service') { 
+            steps { 
+                build '1-discovery-service-pipeline'
+            }
+        }
+        stage('Build Config Service') { 
+            steps { 
+                build '2-config-service-pipeline'
+            }
+        }
+        stage('Build Auth Service') { 
+            steps { 
+                build '3-auth-service-pipeline'
+            }
+        }
+        stage('Build API Gateway') { 
+            steps { 
+                build '3-api-gateway-pipeline'
+            }
+        }
+        stage('Build order service') { 
+            steps { 
+                build '4-order-service-pipeline'
+            }
+        }
+        stage('Build product service') { 
+            steps { 
+                build '5-product-service-pipeline'
             }
         }
     }
-}
-
-def changesetContainsPath(path) {
-    def changedFiles = currentBuild.changeSets.collectMany { it.affectedFiles.collect { it.path } }
-    return changedFiles.any { it.startsWith(path) }
 }

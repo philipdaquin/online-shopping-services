@@ -26,7 +26,7 @@ spec:
           # - Each init container must complete successfully before the next one starts.
       containers:
       - name:  auth-service-dep
-        image:  philipasd/auth-service-v1:latest
+        image:  philipasd/auth-service:latest
         imagePullPolicy: Always
         resources:
           requests:

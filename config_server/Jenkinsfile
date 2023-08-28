@@ -2,36 +2,33 @@ pipeline {
     agent any 
 
     environment { 
-
+        dockerimagename = "philipasd/config-service"
     }
 
     stages{
         stage("Welcome") {
             post{
                 always { 
-                    echo 'Entering Auth Service'
+                    echo 'Entering Api Gateay'
                 }
             }
         }
-        stage('Checkout') {
-            steps { 
-                sh "mvn --version"
-                sh "docker version"
-                
-                echo "Build"
-                echo "PATH - $PATH"
-                echo "BUILD_NUMBER - $env.BUILD_NUMBER"
-                echo "BUILD_ID - $env.BUILD_ID"
-                echo "JOB_NAME - $env.JOB_NAME"
-                echo "BUILD_TAG - $env.BUILD_TAG"
-                echo "BUILD_URL - $env.BUILD_URL"
+        stage('Clone Repository') {
+            steps {
+                // Checkout the source code
+                git url: 'https://github.com/philipdaquin/java_microservices.git'
             }
         }
         stage('Compile') {
             steps { 
-                sh "mvn test"
+                sh "mvn clean install"
             }
         }
+        stage('Unit Test') {
+			steps {
+				sh "mvn test"
+			}
+		}
         stage('Integration Test') {
             steps { 
                 sh "mvn failsafe:integration-test failsafe:verify"
@@ -45,53 +42,28 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("config_service:${env.BUILD_TAG}")
+                    dockerImage = docker.build(dockerimagename)
                 } 
             }
         }
         stage('Push Docker Image to Docker Hub') {
+            environment {
+               registryCredential = 'dockerhub-credentials'
+           }
             steps { 
                 script() { 
-                    docker.withDockerRegistry('https://registry.hub.docker.com', 'dockerhub') { 
+                    docker.withDockerRegistry('https://registry.hub.docker.com', registryCredential) { 
                         dockerImage.push()
                         dockerImage.push('latest')
                     }
                 }
             }
         }
-
-        /*
-            Update Deployment Container Image: 
-
-            ```
-                api-gateway-deployment.yaml {
-                    container: apigateway:${env.BUILD_TAG}
-                    ...
-                }
-            ```
-        */
-        // stage("Trigger Manifest Latest Deployment Yaml") { 
-        //     build job: 'updateManifest', 
-        //     parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
-        // }
-        // stage("Deploy to kubernetes") {
-        //     steps { 
-        //         script {
-        //             sh 'minikube start'
-        //             echo 'kubernetes started successfully'
-        //         }
-        //     }
-        //     steps { 
-        //         script { 
-        //             kubernetesDeploy (configs: 'api-gateway-deployment.yaml', kubeconfigId: 'k8sconfigpwd')
-        //         }
-        //     }
-        // }
     }
     post { 
         success {
             echo 'Successful run!'
-            echo 'Exiting Auth Service'
+            echo 'Exiting Api Gateway'
         }
         failure { 
             echo 'Failed build!'
