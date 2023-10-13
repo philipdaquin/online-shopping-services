@@ -1,5 +1,6 @@
 # Microservices Sample
-Sample file 
+
+![samplemicroservices](https://github.com/philipdaquin/online-shopping-services/assets/85416532/c84079a8-7f39-4ed1-bb15-9b62b3fafe04)
 
 ### General System Requirements
 1. Users should be able to add new products to sell 
@@ -40,7 +41,6 @@ Sample file
 ### Cost Constraints
 - Minimise the maintenance: We want a reliable system that can handle random spikes in our system
 
-
 ### DEPENDENCIES
 - Core
 - Spring
@@ -51,7 +51,6 @@ Sample file
     - RestTemplate
     - Spring Data
         - Spring Data JPA
-
     - Spring Cloud
         - Spring Cloud Gateway Server
         - Spring Cloud Config Server
@@ -66,8 +65,6 @@ Sample file
 - Kubernetes
 - Jenkins
 - Junit
-
-
 
 Terraform Dependencies 
 - https://github.com/philipdaquin/infra-modules
