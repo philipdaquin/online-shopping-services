@@ -1,4 +1,4 @@
-# Microservices Sample
+# Online Shopping Commerce Sample
 
 ![samplemicroservices](https://github.com/philipdaquin/online-shopping-services/assets/85416532/c84079a8-7f39-4ed1-bb15-9b62b3fafe04)
 
@@ -41,29 +41,7 @@
 ### Cost Constraints
 - Minimise the maintenance: We want a reliable system that can handle random spikes in our system
 
-### DEPENDENCIES
-- Core
-- Spring
-    - Spring Boot
-    - Spring Boot Test (Junit)
-    - Spring Security
-    - Spring Web
-    - RestTemplate
-    - Spring Data
-        - Spring Data JPA
-    - Spring Cloud
-        - Spring Cloud Gateway Server
-        - Spring Cloud Config Server
-        - Spring Cloud Config Client
-    - Netflix
-        - Eureka Server
-        - Eureka Client
-- Database
-    - Postgres
-- Zipkin
-- Docker
-- Kubernetes
-- Jenkins
+
 - Junit
 
 Terraform Dependencies 
