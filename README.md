@@ -1,7 +1,9 @@
 # Online Shopping Commerce Sample
 
 ![samplemicroservices](https://github.com/philipdaquin/online-shopping-services/assets/85416532/c84079a8-7f39-4ed1-bb15-9b62b3fafe04)
-
+Terraform Dependencies 
+- https://github.com/philipdaquin/infra-modules
+- https://github.com/philipdaquin/infra-live
 ### General System Requirements
 1. Users should be able to add new products to sell 
 2. Users should be ablet to search by their name or category 
@@ -41,9 +43,8 @@
 ### Cost Constraints
 - Minimise the maintenance: We want a reliable system that can handle random spikes in our system
 
+### Data Relations 
+![relations](https://github.com/philipdaquin/online-shopping-services/assets/85416532/2d9a3fb4-6472-49a5-9e36-4d51d17c3604)
 
-- Junit
 
-Terraform Dependencies 
-- https://github.com/philipdaquin/infra-modules
-- https://github.com/philipdaquin/infra-live
+
